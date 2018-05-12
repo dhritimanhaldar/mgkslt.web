@@ -1,8 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-//import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from "@angular/http";
-import { BrowserModule }    from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
@@ -27,9 +26,9 @@ import {
 } from '@agm/core';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
-const appInitializerFn = (appConfig: AppNetworkService) => {
+const appInitializerFn = (userRolesList: AppNetworkService) => {
   return () => {
-    return appConfig.getUserRole();
+    return userRolesList.getUserRole();
   };
 };
 
@@ -42,7 +41,6 @@ const appInitializerFn = (appConfig: AppNetworkService) => {
     AppRoutingModule,
     BrowserModule,
     HttpModule,
-    //HttpClientModule,
     AgmCoreModule.forRoot({
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
     })

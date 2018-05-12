@@ -12,6 +12,8 @@ export class AppNetworkService {
   private _roleauth: string;
   private cookieService:CookieService;
   private baseWebUrl: string = "//www.mgkslt.com"
+  private roles = ["ADMIN", "TEACHER", "PARENT"];
+  private roleList = null;
 
   constructor(
     public http: Http,
@@ -19,7 +21,15 @@ export class AppNetworkService {
   ) {
       this.cookieService = _cookieService;
       this.verifyCookies(this.getCookie("authorization"), this.getCookie("roleauth"));
-      this._token = this.getCookie("authorization")
+      this._token = this.getCookie("authorization");
+   }
+
+   redirectToLogin() {
+     window.location.href = this.baseWebUrl + "/login";
+   }
+
+   redirectToPortal() {
+     window.location.href = this.baseWebUrl + "/portal";
    }
 
    //COOKIE RELATED FUNCTIONS
@@ -37,12 +47,12 @@ export class AppNetworkService {
     }
 
     verifyCookies(authCookie: string, roleauthCookie: string) {
-      if(authCookie && roleauthCookie) {
-        window.location.href = this.baseWebUrl + "/portal";
+      if(!authCookie) {
+        this.redirectToLogin()
         return;
       }
-      if(!authCookie) {
-        window.location.href = this.baseWebUrl + "/login";
+      if(roleauthCookie){
+        this.redirectToPortal()
         return;
       }
     }
@@ -62,7 +72,6 @@ export class AppNetworkService {
       .then(res => {
         if (res.headers.get("roleauth")) {
           this._roleauth = res.headers.get("roleauth");
-          this.setCookie("roleauth", this._roleauth);
         }
         return res;
       });
@@ -81,7 +90,6 @@ export class AppNetworkService {
       .then(res => {
         if (res.headers.get("roleauth")) {
           this._roleauth = res.headers.get("roleauth");
-          this.setCookie("roleauth", this._roleauth);
         }
         return res;
       });
@@ -100,7 +108,6 @@ export class AppNetworkService {
       .then(res => {
         if (res.headers.get("roleauth")) {
           this._roleauth = res.headers.get("roleauth");
-          this.setCookie("roleauth", this._roleauth);
         }
         return res;
       });
@@ -124,14 +131,22 @@ export class AppNetworkService {
 
   //get all user data
   getUserRole(): Promise<any> {
-    return this.getRequest("secure/user/listRoles")
+    if(this.roleList == null){
+      return this.getRequest("secure/user/listRoles")
     .then(d => {
-        return d._body;
+        let data = d.json();
+        this.roleList = data;
+        return data;
       })
       .catch(e => {
-        console.log(" --> " + e);
+        this.deleteCookie("authorization");
+        this.deleteCookie("roleauth");
+        this.verifyCookies(undefined, undefined);
         return false;
       });;
+    } else {
+      return new Promise(this.roleList);
+    }
   }
 
 }

@@ -3,6 +3,7 @@
     "use strict";
 
     var baseUrl = "//www.mgkslt.com";
+    var baseApiUrl = "https://sg.mgkslt.com";
     if(getCookie("authorization")) {
        window.location = baseUrl
     } else {
@@ -78,7 +79,7 @@
 
         function signin() {
             $.ajax({
-                url: baseUrl + "/user/login",
+                url: baseApiUrl + "/user/login",
                 type: "POST",
                 data: JSON.stringify({ phone: countryCode + $(input[0]).val(), password: $(input[1]).val() }),
                 contentType: "application/json; charset=utf-8",
