@@ -26,9 +26,9 @@ import {
 } from '@agm/core';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
-const appInitializerFn = (userRolesList: AppNetworkService) => {
+const appInitializerFn = (appNetworkService: AppNetworkService) => {
   return () => {
-    return userRolesList.getUserRole();
+    return appNetworkService.getUserAsync();
   };
 };
 

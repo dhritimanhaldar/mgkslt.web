@@ -14,6 +14,7 @@ export class AppNetworkService {
   private baseWebUrl: string = "//www.mgkslt.com"
   private roles = ["ADMIN", "TEACHER", "PARENT"];
   private roleList = null;
+  private user = null;
 
   constructor(
     public http: Http,
@@ -129,7 +130,35 @@ export class AppNetworkService {
     return this._baseUrl + url;
   }
 
-  //get all user data
+  //get all user details
+  getUserAsync(): Promise<any> {
+    if(this.user == null) {
+      return this.getRequest("secure/user")
+      .then(d => {
+        let data = d.json();
+        this.user = data;
+        return data;
+      }).catch(e => {
+        this.deleteCookie("authorization");
+        this.deleteCookie("roleauth");
+        this.verifyCookies(undefined, undefined);
+        return false;
+      });
+    }
+  }
+
+  getUser(): Object {
+    return this.user;
+  }
+
+  //logout
+  logout() {
+    this.deleteCookie("authorization")
+    this.deleteCookie("roleauth")
+    window.location.reload();
+  }
+
+  //get all user roles
   getUserRole(): Promise<any> {
     if(this.roleList == null){
       return this.getRequest("secure/user/listRoles")
@@ -143,7 +172,7 @@ export class AppNetworkService {
         this.deleteCookie("roleauth");
         this.verifyCookies(undefined, undefined);
         return false;
-      });;
+      });
     } else {
       return new Promise(this.roleList);
     }

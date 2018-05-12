@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { Router } from '@angular/router';
+import { AppNetworkService } from '../../services/app-network.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,10 +15,12 @@ export class NavbarComponent implements OnInit {
     mobile_menu_visible: any = 0;
     private toggleButton: any;
     private sidebarVisible: boolean;
+    private appNetworkService: AppNetworkService;
 
-    constructor(location: Location,  private element: ElementRef, private router: Router) {
+    constructor(location: Location,  private element: ElementRef, private router: Router, private apns: AppNetworkService) {
       this.location = location;
       this.sidebarVisible = false;
+      this.appNetworkService = apns;
     }
 
     ngOnInit(){
@@ -110,17 +113,11 @@ export class NavbarComponent implements OnInit {
     };
 
     getTitle(){
-      var titlee = this.location.prepareExternalUrl(this.location.path());
-      if(titlee.charAt(0) === '#'){
-          titlee = titlee.slice( 2 );
-      }
-      titlee = titlee.split('/').pop();
+      return this.appNetworkService.getUser()["name"];
+    }
 
-      for(var item = 0; item < this.listTitles.length; item++){
-          if(this.listTitles[item].path === titlee){
-              return this.listTitles[item].title;
-          }
-      }
-      return 'Dashboard';
+    logout(event: any) {
+      event.stopPropagation();
+      this.appNetworkService.logout();
     }
 }

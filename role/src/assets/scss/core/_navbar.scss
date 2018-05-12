@@ -152,8 +152,8 @@
         @include navbar-colors($grey-900, $white-color);
     }
 
-    &.navbar-transparent{
-        background-color: transparent !important;
+    &.navbar-white{
+        background-color: #fff !important;
         box-shadow: none;
         padding-top: 25px;
 
@@ -183,7 +183,7 @@
     padding: 3px 0 0 15px;
   }
 
-  &.navbar-transparent{
+  &.navbar-white{
     padding-top: 10px;
   }
 
