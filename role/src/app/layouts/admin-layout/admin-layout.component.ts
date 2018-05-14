@@ -28,8 +28,8 @@ export class AdminLayoutComponent implements OnInit {
       } else {
           document.getElementsByTagName('body')[0].classList.remove('perfect-scrollbar-off');
       }
-      const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-      const elemSidebar = <HTMLElement>document.querySelector('.sidebar .sidebar-wrapper');
+      // const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+      // const elemSidebar = <HTMLElement>document.querySelector('.sidebar .sidebar-wrapper');
 
       this.location.subscribe((ev:PopStateEvent) => {
           this.lastPoppedUrl = ev.url;
@@ -47,12 +47,12 @@ export class AdminLayoutComponent implements OnInit {
          }
       });
       this._router = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((event: NavigationEnd) => {
-           elemMainPanel.scrollTop = 0;
-           elemSidebar.scrollTop = 0;
+           // elemMainPanel.scrollTop = 0;
+           // elemSidebar.scrollTop = 0;
       });
       if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
-          let ps = new PerfectScrollbar(elemMainPanel);
-          ps = new PerfectScrollbar(elemSidebar);
+          // let ps = new PerfectScrollbar(elemMainPanel);
+          // ps = new PerfectScrollbar(elemSidebar);
       }
   }
   ngAfterViewInit() {
@@ -70,9 +70,9 @@ export class AdminLayoutComponent implements OnInit {
   }
   runOnRouteChange(): void {
     if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
-      const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-      const ps = new PerfectScrollbar(elemMainPanel);
-      ps.update();
+      // const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+      // const ps = new PerfectScrollbar(elemMainPanel);
+      // ps.update();
     }
   }
   isMac(): boolean {
