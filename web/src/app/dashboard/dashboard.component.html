@@ -1,0 +1,165 @@
+<div class="main-content">
+  <div class="container-fluid">
+      
+    <div class="row" *ngIf="showEmptyAdminView">
+      <div class="card card-plain">
+        <div class="card-header card-header-rose">
+            <h4 class="card-title">Administrator</h4>
+            <p class="card-category">Schools you are admin at</p>
+        </div>
+      </div>
+      <div class="col col-lg-4"></div>
+        <div class="col col-lg-4 text-center">
+          <p style="color:grey;font-style: italic;">You have not created any school</p>
+        </div>
+        <div class="col col-lg-4"></div>
+    </div>
+
+    <div class="row" *ngIf="roleList['ADMIN']">        
+      <div class="card card-plain">
+        <div class="card-header card-header-rose">
+            <h4 class="card-title">Administrator</h4>
+            <p class="card-category">Schools you are admin at</p>
+        </div>
+      </div>
+      <div class="col-md-2" *ngFor="let schoolData of roleList['ADMIN']">
+        <div class="card card-product">
+          <div class="card-header card-header-image">
+            <a><img src="http://md-pro-angular.creative-tim.com/assets/img/card-2.jpg" class="img"></a>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">{{ (schoolData.school.name.length>20)? (schoolData.school.name | slice:0:20)+'...':(schoolData.school.name) }}</h4>
+            <div class="card-description">
+              <table>
+                <tr>
+                  <td class="card-category" valign="top" style="width:30px">
+                    <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                  </td>
+                  <td>
+                    {{ (schoolData.school.boardName.length>20)? (schoolData.school.boardName | slice:0:20)+'...':(schoolData.school.boardName) }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="card-category">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                  </td>
+                  <td>
+                    {{ schoolData.school.city }}, {{ schoolData.school.stateName }}
+                  </td>
+                </tr>
+              </table>
+              <br>
+              <a href="{{schoolData.school.visitUrl}}" style="width: 100%" class="btn btn-rose btn-round">Visit</a>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">access_time</i> created 4 minutes ago
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="roleList['TEACHER']">        
+      <div class="card card-plain">
+        <div class="card-header card-header-rose">
+            <h4 class="card-title">Teacher</h4>
+            <p class="card-category">Schools you are teacher at</p>
+        </div>
+      </div>
+      <div class="col-md-2" *ngFor="let schoolData of roleList['TEACHER']">
+        <div class="card card-product">
+          <div class="card-header card-header-image">
+            <a><img src="http://md-pro-angular.creative-tim.com/assets/img/card-2.jpg" class="img"></a>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">{{ schoolData.school.name }}</h4>
+            <div class="card-description">
+              <table>
+                <tr>
+                  <td class="card-category" valign="top" style="width:30px">
+                    <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                  </td>
+                  <td>
+                    {{ schoolData.school.boardName }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="card-category">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                  </td>
+                  <td>
+                    {{ schoolData.school.city }}, {{ schoolData.school.stateName }}
+                  </td>
+                </tr>
+              </table>
+              <br>
+              <a href="{{schoolData.school.visitUrl}}" style="width: 100%" class="btn btn-rose btn-round">Visit</a>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">access_time</i> created 4 minutes ago
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="roleList['PARENT']">        
+      <div class="card card-plain">
+        <div class="card-header card-header-rose">
+            <h4 class="card-title">Parent</h4>
+            <p class="card-category">List of your children</p>
+        </div>
+      </div>
+      <div class="col-md-2" *ngFor="let schoolData of roleList['PARENT']">
+        <div class="card card-product">
+          <div class="card-header card-header-image">
+            <a><img src="http://md-pro-angular.creative-tim.com/assets/img/card-2.jpg" class="img"></a>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">{{ schoolData.school.name }}</h4>
+            <div class="card-description">
+              <table>
+                <tr>
+                  <td class="card-category" valign="top" style="width:30px">
+                    <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                  </td>
+                  <td>
+                    {{ schoolData.school.boardName }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="card-category">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                  </td>
+                  <td>
+                    {{ schoolData.school.city }}, {{ schoolData.school.stateName }}
+                  </td>
+                </tr>
+              </table>
+              <br>
+              <a href="{{schoolData.school.visitUrl}}" style="width: 100%" class="btn btn-rose btn-round">Visit</a>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">access_time</i> created 4 minutes ago
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      
+      <div class="row" *ngIf="showEmptyAdminView || roleList['ADMIN']">
+        <div class="col col-lg-4"></div>
+        <div class="col col-lg-4 text-center">
+          <button mat-raised-button type="button" class="btn btn-rose" [routerLink]="['/school']">CREATE SCHOOL</button>
+        </div>
+        <div class="col col-lg-4"></div>
+      </div>
+    
+  </div>
+</div>

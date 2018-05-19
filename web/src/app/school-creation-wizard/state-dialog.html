@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>List of States</h2>
+<div *ngIf="isLoading">
+	Loading...
+</div>
+<div *ngIf="!isLoading">
+	<div *ngIf = "stateListCallFailed">
+		Call failed. try again
+	</div>
+	<div *ngIf = "!stateListCallFailed">
+		<mat-form-field mat-dialog-title>
+			<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+		</mat-form-field>
+		<mat-dialog-content style="height: calc(60vh - 185px);">
+			<mat-table #table [dataSource]="dataSource">
+			    <ng-container matColumnDef="name">
+			      <mat-header-cell *matHeaderCellDef style="cursor: pointer;"> Name </mat-header-cell>
+			      <mat-cell style="cursor: pointer;" *matCellDef="let element" [ngClass]="popup-option" (click)="selectState(element)"> {{element.name}} </mat-cell>
+			    </ng-container>
+			    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+	  			<mat-row style="cursor: pointer;" *matRowDef="let row; columns: displayedColumns;" [ngClass]="popup-option"></mat-row>
+			</mat-table>
+		</mat-dialog-content>
+	</div>
+</div>
