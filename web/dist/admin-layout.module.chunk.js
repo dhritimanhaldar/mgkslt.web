@@ -311,7 +311,7 @@ module.exports = "body{\n\theight: 100%;\n}"
 /***/ "./src/app/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main-content\" style=\"height: 100%;\">\n  <div class=\"container-fluid\" style=\"height: 100%;\">\n\n    <div class=\"row\" style=\"height: 100%;background-color: red\">\n      \n    </div>\n\n  </div>\n</div>"
+module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n\n    <div class=\"row\">\n      <div class=\"col col-lg-3\"></div>\n        <div class=\"col col-lg-6 text-center\">\n          <button mat-raised-button type=\"button\" class=\"btn btn-rose\" [routerLink]=\"['/school']\">CREATE SCHOOL</button>\n        </div>\n        <div class=\"col col-lg-3\"></div>\n    </div>\n\n  </div>\n</div>"
 
 /***/ }),
 
