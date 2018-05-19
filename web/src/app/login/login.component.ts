@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppNetworkService } from '../services/app-network.service';
 import { AppNotificationService } from '../services/app-notification.service';
 import { User } from '../models/User'
+import { Utils } from '../Utils'
 import { Router } from '@angular/router';
 
 @Component({
@@ -23,19 +24,23 @@ export class LoginComponent implements OnInit {
     this.router = rtr;
   }
 
-  login() {
+  login(event) {
+    var button = event.target;
     if(this.user.validatePhone() && this.user.validatePassword()) {
       
       var phone = this.countryCode + this.user.phone;
-
+      var buttonContent = button.innerHTML
+      Utils.markBusy(button)
       this.appNetworkService.login(phone, this.user.password)
       .then(d => {
+        Utils.markActive(button, buttonContent)
         if(d._body === "ACTIVE") {
-          this.router.navigateByUrl('/school');
+          window.location.reload();
         } else {
           this.appNotificationService.notify("Your account is not actived yet. Please go to the app to activte it", "info")
         }
       }).catch(e => {
+        Utils.markActive(button, buttonContent)
         if(e.status >= 400) {
           this.appNotificationService.notify("Invalid credentials", "danger")
         } else if(e.status >= 500) {

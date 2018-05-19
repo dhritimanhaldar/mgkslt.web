@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material';
 import { MatTableModule } from '@angular/material';
 import { MatTableDataSource } from '@angular/material';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
@@ -44,6 +45,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
     BrowserModule,
     HttpModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
     MatFormFieldModule,
     MatInputModule,
     MatTableModule,

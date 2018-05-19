@@ -17,7 +17,7 @@ export class AdminLayoutComponent implements OnInit {
   private lastPoppedUrl: string;
   private yScrollStack: number[] = [];
   private appNetworkService: AppNetworkService;
-  private isNavBarActive: Boolean = true;
+  public isNavBarActive: Boolean = true;
 
   constructor( public location: Location, private router: Router, private apns: AppNetworkService) {
     this.appNetworkService = apns;
@@ -66,6 +66,7 @@ export class AdminLayoutComponent implements OnInit {
   ngAfterViewInit() {
       this.runOnRouteChange();
   }
+
   isMaps(path){
       var titlee = this.location.prepareExternalUrl(this.location.path());
       titlee = titlee.slice( 1 );

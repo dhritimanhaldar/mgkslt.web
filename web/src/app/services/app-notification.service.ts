@@ -29,7 +29,7 @@ export class AppNotificationService {
 
       },{
           type: type,
-          timer: 4000,
+          timer: 2000,
           placement: {
               from: from,
               align: align
