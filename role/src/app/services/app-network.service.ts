@@ -3,6 +3,19 @@ import { HttpClient } from '@angular/common/http';
 import { Http, Headers, RequestOptions } from "@angular/http";
 import {CookieService} from 'angular2-cookie/core';
 
+  
+//school object
+export class school {
+  constructor(
+    public name: string,
+    public address: string,
+    public city: string,
+    public pincode: string,
+    public boardId?: number,
+    public stateId?: number
+  ) {}
+}
+
 @Injectable()
 export class AppNetworkService {
   private appConfig;
@@ -15,6 +28,8 @@ export class AppNetworkService {
   private roles = ["ADMIN", "TEACHER", "PARENT"];
   private roleList = null;
   private user = null;
+  private boardList = null;
+  private stateList = null;
 
   constructor(
     public http: Http,
@@ -158,6 +173,24 @@ export class AppNetworkService {
     window.location.reload();
   }
 
+  //get all boards
+  getBoardList(): Promise<any> {
+    if(this.boardList == null) {
+      return this.getRequest("/board/list")
+    } else {
+      return new Promise(this.boardList);
+    }
+  }
+
+  //get all states
+  getStateList(): Promise<any> {
+    if(this.stateList == null) {
+      return this.getRequest("/state/list")
+    } else {
+      return new Promise(this.stateList);
+    }
+  }
+
   //get all user roles
   getUserRole(): Promise<any> {
     if(this.roleList == null){
@@ -176,6 +209,40 @@ export class AppNetworkService {
     } else {
       return new Promise(this.roleList);
     }
+  }
+
+  //save school
+  saveSchoolDetail(objSchool: school): Promise<any> {
+    return this.postRequest("secure/school/", objSchool);
+  }
+
+  //save class detail
+  saveClassDetail(objClass, schoolId, classId): Promise<any> {
+    if (classId && classId.length > 0) {
+      return this.postRequest(
+        "secure/app/school/" + schoolId + "/class",
+        objClass
+      );
+    } else {
+      return this.postRequest(
+        "secure/app/school/" + schoolId + "/class",
+        objClass
+      );
+    }
+  }
+
+  //role auth key
+  getRoleAuthKey(type, id, sid): Promise<boolean> {
+    return this.getRequest(
+      "secure/user/roleauth/" + type + "/" + id + "?sid=" + sid
+    )
+      .then(d => {
+        this._roleauth = d.headers.get("roleauth");
+        return true;
+      })
+      .catch(e => {
+        return false;
+      });
   }
 
 }

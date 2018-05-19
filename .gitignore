@@ -1,3 +1,4 @@
 */node_modules
-.DS_Store
-role/src/.DS_Store
+./role/dist
+#.DS_Store
+#role/src/.DS_Store
