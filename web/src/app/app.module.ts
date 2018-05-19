@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpModule } from "@angular/http";
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -35,6 +35,16 @@ import {
 } from '@agm/core';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
+const appInitializerFn = (appNetworkService: AppNetworkService) => {
+  if(appNetworkService.verifyIfLoggedIn()){
+      return () => {
+        return appNetworkService.getUserAsync();
+    };
+  }else {
+    return() => {return true}
+  }
+};
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -58,12 +68,19 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
     AppComponent,
     AdminLayoutComponent,
     BoardDialog,
-    StateDialog
+    StateDialog,
   ],
   providers: [
     CookieService,
     AppNotificationService,
-    AppNetworkService
+    AppNetworkService,
+    AppNetworkService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFn,
+      multi: true,
+      deps: [AppNetworkService]
+    }
   ],
   bootstrap: [AppComponent]
 })
