@@ -17,6 +17,8 @@ export class AppComponent {
 		this.router = rtr;
 		if(!this.appNetworkService.verifyIfLoggedIn() && this.router.url !== '/login') {
 			this.router.navigateByUrl('/login');
+		} else if(!this.appNetworkService.verifyIfAlreadyInPortal() && this.router.url !== '/school') {
+			this.router.navigateByUrl('/school');
 		}
 	}
 

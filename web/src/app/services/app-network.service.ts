@@ -35,8 +35,12 @@ export class AppNetworkService {
     private _cookieService:CookieService
   ) {
       this.cookieService = _cookieService;
-      // this.verifyCookies(this.getCookie("authorization"), this.getCookie("roleauth"));
-      this._token = this.getCookie("authorization");
+      if(this.getCookie("authorization") && this.getCookie("authorization").startsWith("Bearer")) {
+        this._token = this.getCookie("authorization")
+      }
+      if(this.getCookie("roleauth") && this.getCookie("roleauth").startsWith("Bearer")) {
+        this._token = this.getCookie("roleauth")
+      }
    }
 
    //COOKIE RELATED FUNCTIONS
@@ -63,6 +67,13 @@ export class AppNetworkService {
         return false
       } 
       return true
+    }
+
+    verifyIfAlreadyInPortal(): Boolean {
+      if(!this.getCookie("roleauth")) {
+        return false;
+      }
+      return true;
     }
 
     // verifyCookies(authCookie: string, roleauthCookie: string) {
@@ -107,6 +118,10 @@ export class AppNetworkService {
       )
       .toPromise()
       .then(res => {
+        if (res.headers.get("authorization")) {
+          this._token = res.headers.get("authorization");
+          this.setCookie("authorization", this._token)
+        }
         if (res.headers.get("roleauth")) {
           this._roleauth = res.headers.get("roleauth");
         }
@@ -146,6 +161,13 @@ export class AppNetworkService {
   //get url
   getUrl(url): string {
     return this._baseUrl + url;
+  }
+
+  login(phone: string, password: string): Promise<any> {
+    return this.postRequest("user/login", {
+      phone: phone,
+      password: password
+    })
   }
 
   //get all user details
