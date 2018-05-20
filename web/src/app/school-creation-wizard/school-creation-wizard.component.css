@@ -98,6 +98,16 @@
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.86);
 }
 
+.schoolFilePreview {
+	display:block;
+	width: 100%;
+	text-align: center;
+	border: 5px solid #fff;
+	height: 250px;
+	background-color: #f7f7f7;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.86);
+}
+
 .drop-zone-crosslabel {
 	position: absolute;
 	top:5px;

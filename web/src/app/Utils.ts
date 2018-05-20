@@ -9,4 +9,9 @@ export class Utils {
 		button.disabled = false
 		button.innerHTML = originalButtonContent;
 	}
+
+  	public static checkFileExtention(fileName, accepts): boolean {
+    	var _reg = new RegExp("\\." + accepts.join("$|\\.") + "$", "i");
+    	return _reg.test(fileName);
+  	}
 }

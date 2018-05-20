@@ -53,6 +53,13 @@ export class AppNetworkService {
       this._cookieService.put(key, val);
     }
 
+    setPermanentCookie(key: string, val: string) {
+      let opts = {
+          expires: new Date('3000-12-31')
+      };
+      this._cookieService.put(key, val, opts);
+    }
+
     deleteCookie(key: string) {
       this._cookieService.remove(key);
     }
@@ -102,7 +109,7 @@ export class AppNetworkService {
       .then(res => {
         if (res.headers.get("roleauth")) {
           this._roleauth = res.headers.get("roleauth");
-          this.setCookie("roleauth", this._roleauth)
+          this.setPermanentCookie("roleauth", this._roleauth)
         }
         return res;
       });
@@ -121,11 +128,11 @@ export class AppNetworkService {
       .then(res => {
         if (res.headers.get("authorization")) {
           this._token = res.headers.get("authorization");
-          this.setCookie("authorization", this._token)
+          this.setPermanentCookie("authorization", this._token)
         }
         if (res.headers.get("roleauth")) {
           this._roleauth = res.headers.get("roleauth");
-          this.setCookie("roleauth", this._roleauth)
+          this.setPermanentCookie("roleauth", this._roleauth)
         }
         return res;
       });
@@ -144,10 +151,24 @@ export class AppNetworkService {
       .then(res => {
         if (res.headers.get("roleauth")) {
           this._roleauth = res.headers.get("roleauth");
-          this.setCookie("roleauth", this._roleauth)
+          this.setPermanentCookie("roleauth", this._roleauth)
         }
         return res;
       });
+  }
+
+  //upload file
+  uploadFile(file, url): Promise<any> {
+    let formData:FormData = new FormData();
+    formData.append('file', file, file.name);
+    let headers = new Headers();
+    // headers.append('Content-Type', 'multipart/form-data');
+    // headers.append('Accept', 'application/json');
+    headers.append('authorization', this._token);
+    headers.append('roleauth', this._roleauth);
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(this.getUrl(url), formData, options)
+    .toPromise()
   }
 
   //get header for all request
@@ -254,18 +275,31 @@ export class AppNetworkService {
   }
 
   //save class detail
-  saveClassDetail(objClass, schoolId, classId): Promise<any> {
-    if (classId && classId.length > 0) {
-      return this.postRequest(
-        "secure/app/school/" + schoolId + "/class",
-        objClass
-      );
-    } else {
-      return this.postRequest(
-        "secure/app/school/" + schoolId + "/class",
-        objClass
-      );
-    }
+  saveClassDetail(objClass, schoolId): Promise<any> {
+    return this.postRequest("secure/app/school/"+schoolId+"/class",  objClass);
+  }
+
+  // FILE UPLOADS
+
+  uploadStudentFile(uri, schoolId): Promise<any> {
+    return this.uploadFile(
+      uri,
+      "secure/app/school/" + schoolId + "/user/student"
+    );
+  }
+
+  teacherFileUpload(uri, schoolId): Promise<any> {
+    return this.uploadFile(
+      uri,
+      "secure/app/school/" + schoolId + "/user/teacher"
+    );
+  }
+
+  studentTeacherMappingFileUpload(uri, schoolId): Promise<any> {
+    return this.uploadFile(
+      uri,
+      "secure/app/school/" + schoolId + "/user/stmapping"
+    );
   }
 
   //role auth key

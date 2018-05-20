@@ -28,6 +28,7 @@ export class SchoolCreationWizardComponent implements OnInit {
   public isActive: Boolean = false;
   public isPreviewActive: Boolean = false;
   public schoolImagePreview;
+  public schoolImageName;
   public school: School = new School();
   public adminId: Number;
   private maxSectionCount = 20
@@ -35,6 +36,7 @@ export class SchoolCreationWizardComponent implements OnInit {
   public sectionCountArray: Number[] = [];
   private router: Router;
   public isDataAvailable:boolean = false;
+  public classStructure;
 
   constructor(private apns: AppNetworkService, private ans: AppNotificationService, public dialog: MatDialog, private rtr: Router, private route: ActivatedRoute) { 
   	this.appNetworkService = apns;
@@ -42,6 +44,64 @@ export class SchoolCreationWizardComponent implements OnInit {
     this.router = rtr;
     for(var index = this.minSectionCount; index <= this.maxSectionCount; index++) {
       this.sectionCountArray.push(index)
+    }
+    this.classStructure = [{
+      "levelName": "Preschool",
+      "structure": [
+        {
+          "standard": "Playschool",
+          "selected": false,
+          "sectionCount": 1
+        },
+        {
+          "standard": "U.K.G",
+          "selected": false,
+          "sectionCount": 1
+        },
+        {
+          "standard": "L.K.G",
+          "selected": false,
+          "sectionCount": 1
+        }
+      ]
+    }];
+    this.classStructure.push({
+      "levelName": "Middle School",
+      "structure": [
+        {
+          "standard": "1st",
+          "selected": false,
+          "sectionCount": 1
+        },
+        {
+          "standard": "2nd",
+          "selected": false,
+          "sectionCount": 1
+        },
+        {
+          "standard": "3rd",
+          "selected": false,
+          "sectionCount": 1
+        }
+      ]
+    })
+    for(var index = 4; index <= 5; index++) {
+      this.classStructure[1].structure.push({
+        "standard": index + "th",
+        "selected": false,
+        "sectionCount": 1
+      })
+    }
+    this.classStructure.push({
+      "levelName": "High School",
+      "structure": []
+    })
+    for(var index = 6; index <= 12; index++) {
+      this.classStructure[2].structure.push({
+        "standard": index + "th",
+        "selected": false,
+        "sectionCount": 1
+      })
     }
   }
 
@@ -85,27 +145,50 @@ export class SchoolCreationWizardComponent implements OnInit {
     var originalTargetHtml = button.innerHTML
     Utils.markBusy(button)
   	switch(nextStage) {
-  		case 0: this.networkStage1(event.target,success =>  {
+  		case 1: this.networkStage1(event.target,success =>  {
         if(success){
-           this.router.navigateByUrl("/role/school/" + this.school.id)
+           this.router.navigateByUrl("/role/schoolCreate/" + this.school.id)
         } else {
           Utils.markActive(button, originalTargetHtml)
         }
   		})
   		break;
-  		case 1: this.networkStage2(event.target, success => {
+  		case 2: this.networkStage2(event.target, success => {
   			if(success){
-            this.router.navigateByUrl("/role/school/" + this.school.id)
+            this.ngOnInit()
         } else {
           Utils.markActive(button, originalTargetHtml)
         }
   		})
   		break;
+      case 3: this.networkStage3(event.target, success => {
+        if(success){
+            this.ngOnInit()
+        } else {
+          Utils.markActive(button, originalTargetHtml)
+        }
+      })
+      break;
+      case 4: this.networkStage4(event.target, success => {
+        if(success){
+            this.ngOnInit()
+        } else {
+          Utils.markActive(button, originalTargetHtml)
+        }
+      })
+      break;
+      case 5: this.networkStage5(event.target, success => {
+        if(success){
+            this.router.navigateByUrl("/role/schoolCreate/")
+        } else {
+          Utils.markActive(button, originalTargetHtml)
+        }
+      })
+      break;
   	}
   }
 
   private networkStage1(target, callback) {
-	
   	if(!this.school.name || !this.school.address || !this.school.city || !this.school.pincode || !this.school.board || !this.school.state) {
   		this.appNotificationService.notify("One or more fields are missing", "danger")
   		callback(false);
@@ -127,50 +210,102 @@ export class SchoolCreationWizardComponent implements OnInit {
       callback(true);
   	})
   	.catch(e => {
+      if(e.status >= 500) {
         this.appNotificationService.notifyGenericError()
-        callback(false)
+      }else if(e.status == 400 ) {
+        this.appNotificationService.notify("Something is wrong with the input. Please check.","danger")
+      } else if(e.status >= 401){
+        this.appNetworkService.deleteAllCookies()
+        window.location.reload();
+      }
+      callback(false)
     });
   }
 
   private networkStage2(target, callback) {
-	
-	if(!this.school.name || !this.school.address || !this.school.city || !this.school.pincode || !this.school.board || !this.school.state) {
-		this.appNotificationService.notify("One or more fields are missing", "danger")
-		callback(false);
-		return;
-	}
-  	var schoolObject = {
-  		name: this.school.name,
-  		address: this.school.address,
-  		city: this.school.city,
-  		pincode: this.school.pincode,
-  		boardId: this.school.board.id,
-  		stateId: this.school.state.id
-  	}
-  	this.appNetworkService.saveSchoolDetail(schoolObject)
-  	.then(d=> {
-  		var data = d.json();
-  		this.school.id = data.schoolId
-  		this.adminId = data.adminId
-  		this.appNetworkService.getRoleAuthKey("admin", this.adminId, this.school.id)
-  		.then(dt => {
-  			
-  			if(dt){
-  				callback(true)
-  			} else {
-  				window.location.reload();
-  				callback(false)
-  			}
-  		})
-  		.catch(ex => {
-  			window.location.reload();
-  			callback(false)
-  		})
-  	})
-  	.catch(e => {
+     var reqBody = [];
+     for(var index in this.classStructure) {
+       var cs = this.classStructure[index];
+       for(var subindex in cs.structure) {
+         var st = cs.structure[subindex];
+         if(st.selected) {
+           reqBody.push({
+             "standard": st.standard,
+             "sectionCount": st.sectionCount
+           })
+         }
+       }
+     }
+
+    this.appNetworkService.saveClassDetail(reqBody, this.school.id)
+     .then(d => {
+       callback(true);
+     })
+     .catch(e => {
+       if(e.status >= 500) {
+          this.appNotificationService.notifyGenericError()
+        } else if(e.status == 400 ) {
+          this.appNotificationService.notify("Something is wrong with the input. Please check.","danger")
+        } else if(e.status >= 401){
+          this.appNetworkService.deleteAllCookies()
+          window.location.reload();
+        }
+       callback(false)
+     })
+  }
+
+  private networkStage3(target, callback) {
+   this.appNetworkService.uploadStudentFile(this.schoolImagePreview, this.school.id)
+   .then(d => {
+     callback(true);
+   })
+   .catch(e => {
+     if(e.status >= 500) {
         this.appNotificationService.notifyGenericError()
-        callback(false)
-    });
+      }else if(e.status == 400 ) {
+        this.appNotificationService.notify("Something is wrong with the input. Please check.","danger")
+      } else if(e.status >= 401){
+        this.appNetworkService.deleteAllCookies()
+        window.location.reload();
+      }
+     callback(false)
+   })
+  }
+
+  private networkStage4(target, callback) {
+    this.appNetworkService.teacherFileUpload(this.schoolImagePreview, this.school.id)
+   .then(d => {
+     callback(true);
+   })
+   .catch(e => {
+     if(e.status >= 500) {
+        this.appNotificationService.notifyGenericError()
+      }else if(e.status == 400 ) {
+        this.appNotificationService.notify("Something is wrong with the input. Please check.","danger")
+      } else if(e.status >= 401){
+        this.appNetworkService.deleteAllCookies()
+        window.location.reload();
+      }
+     callback(false)
+   })
+  }
+
+  private networkStage5(target, callback) {
+    this.appNetworkService.studentTeacherMappingFileUpload(this.schoolImagePreview, this.school.id)
+   .then(d => {
+     callback(true);
+   })
+   .catch(e => {
+     if(e.status >= 500) {
+        this.appNotificationService.notifyGenericError()
+      }else if(e.status == 400 ) {
+        this.appNotificationService.notify("Something is wrong with the input. Please check.","danger")
+      } else if(e.status >= 401){
+        this.appNetworkService.deleteAllCookies()
+        window.location.reload();
+      }
+     callback(false)
+   })
   }
 
   dragStart(event) {
@@ -190,8 +325,12 @@ export class SchoolCreationWizardComponent implements OnInit {
   	event.preventDefault();
   	this.isActive = false;
   	switch(this.school.stage) {
-  		case 1: this.showImagePreview(event.dataTransfer.files[0])
+  		case 0: this.showImagePreview(event.dataTransfer.files[0])
   			break;
+      case 2:
+      case 3:
+      case 4: this.showFileInformation(event.dataTransfer.files[0])
+        break;
   	}
   }
 
@@ -206,20 +345,30 @@ export class SchoolCreationWizardComponent implements OnInit {
   	var reader:FileReader = new FileReader();
   	var self = this;
   	reader.onload = function (event) {
+        self.schoolImageName = file.name
         self.schoolImagePreview = reader.result
         self.isPreviewActive = true;
     }
     reader.readAsDataURL(file);
   }
 
+  showFileInformation(file) {
+    this.schoolImageName = file.name
+    this.schoolImagePreview = file
+    this.isPreviewActive = true;
+  }
+
   clearPreview() {
   	this.schoolImagePreview = null;
   	this.isPreviewActive = false;
+    this.schoolImageName = null;
+    this.isActive = false;
   }
 
   
   ngOnInit() {
     this.isDataAvailable = false;
+    this.clearPreview()
     if(this.router.url !== "/role/schoolCreate") {
       if(!this.school.id) {
         this.route.params.subscribe(params => {
@@ -229,6 +378,7 @@ export class SchoolCreationWizardComponent implements OnInit {
       this.appNetworkService.getSchoolForAdmin(this.school.id)
       .then(d => {
         var data = d.json();
+        this.school.id = data.id
         this.school.name = data.name;
         this.school.stage = data.stage;
         this.adminId = data.currentUserAdminId;
@@ -246,7 +396,9 @@ export class SchoolCreationWizardComponent implements OnInit {
           .catch(ex => {
             if(ex.status >= 500) {
               this.appNotificationService.notifyGenericError()
-            } else if(ex.status >= 400){
+            }else if(ex.status == 400 ) {
+              this.appNotificationService.notify("Something is wrong with the input. Please check.","danger")
+            } else if(ex.status >= 401){
               this.appNetworkService.deleteAllCookies()
               window.location.reload();
             }
@@ -258,9 +410,11 @@ export class SchoolCreationWizardComponent implements OnInit {
       .catch(e => {
         if(e.status >= 500) {
           this.appNotificationService.notifyGenericError()
-        } else if(e.status >= 400){
-          this.appNetworkService.deleteCookie("roleauth")
-          this.router.navigateByUrl("/role")
+        } else if(e.status == 400 ) {
+          this.appNotificationService.notify("Something is wrong with the input. Please check.","danger")
+        } else if(e.status >= 401){
+          this.appNetworkService.deleteAllCookies()
+          window.location.reload();
         }
       })
     } else {
