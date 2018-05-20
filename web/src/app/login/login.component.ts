@@ -33,11 +33,11 @@ export class LoginComponent implements OnInit {
       Utils.markBusy(button)
       this.appNetworkService.login(phone, this.user.password)
       .then(d => {
-        Utils.markActive(button, buttonContent)
         if(d._body === "ACTIVE") {
           window.location.reload();
         } else {
           this.appNotificationService.notify("Your account is not actived yet. Please go to the app to activte it", "info")
+          Utils.markActive(button, buttonContent)
         }
       }).catch(e => {
         Utils.markActive(button, buttonContent)
@@ -57,6 +57,10 @@ export class LoginComponent implements OnInit {
     }
   }
   
-  ngOnInit() {}
+  ngOnInit() {
+    if(this.appNetworkService.verifyIfLoggedIn()) {
+      this.router.navigateByUrl("/role")
+    }
+  }
 
 }

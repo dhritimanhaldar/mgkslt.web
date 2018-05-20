@@ -1,4 +1,4 @@
-<div class="main-content">
+<div *ngIf="this.isDataAvailable" class="main-content">
   <div class="container-fluid">
       
       <div class="row">
@@ -6,33 +6,14 @@
         <div class="col col-lg-1"></div>
         <div class="col col-lg-10 text-center">
           <ul class="step-progress step-progress-rose text-center">
-            <li class="step-progress-active">
-              1
-            </li>
-            <li>
-              <hr>
-            </li>
-            <li class="step-progress-incomplete">
-              2
-            </li>
-            <li>
-              <hr>
-            </li>
-            <li class="step-progress-incomplete">
-              3
-            </li>
-            <li>
-              <hr>
-            </li>
-            <li class="step-progress-incomplete">
-              4
-            </li>
-            <li>
-              <hr>
-            </li>
-            <li class="step-progress-incomplete">
-              5
-            </li>
+            <span *ngFor="let stg of [0,1,2,3,4]">
+              <li [ngClass]="{'step-progress-active' : stg == school.stage, 'step-progress-complete': stg < school.stage, 'step-progress-incomplete' : stg > school.stage}">
+                {{stg + 1}}
+              </li>
+              <li *ngIf="stg < 4">
+                <hr>
+              </li>
+            </span>
           </ul>
         </div>
         <div class="col col-lg-1"></div>
@@ -44,9 +25,9 @@
         <div class="col col-lg-10">
 
           <!-- STAGE 1 -->
-          <div class="card" *ngIf="stage == 0">
+          <div class="card" *ngIf="school.stage == 0">
                   <div class="card-header card-header-rose">
-                      <h4 class="card-title">Basic Info</h4>
+                      <h4 class="card-title">Basic Information</h4>
                       <p class="card-category">Tell us about your school</p>
                   </div>
                   <div class="card-body">
@@ -87,22 +68,86 @@
                                 </mat-form-field>
                             </div>
                           </div>
-                          <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="next($event, stage + 1)">NEXT</button>
+                          <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="next($event, school.stage + 1)">NEXT</button>
+                          <button mat-raised-button type="button" class="btn btn-white pull-right" (click)="abort($event)" style="margin-right:10px;">ABORT</button>
                           <div class="clearfix"></div>
                       </form>
                   </div>
           </div>
 
           <!-- STAGE 2 -->
-          <div class="card" *ngIf="stage == 0">
+          <div class="card" *ngIf="school.stage == 1">
                   <div class="card-header card-header-rose">
-                      <h4 class="card-title">Class Info</h4>
+                      <h4 class="card-title">Class Information</h4>
                       <p class="card-category">How many classes does your school have?</p>
                   </div>
                   <div class="card-body">
                       <form>
-                          
-                          <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="next($event, stage + 1)">NEXT</button>
+                        <h3 class="card-title">Preschool</h3>
+                          <div class="table-responsive">
+                            <table class="table">
+                              <thead class=" text-rose">
+                                <th>
+                                    Select
+                                </th>
+                                <th>
+                                    Standard
+                                </th>
+                                <th>
+                                    Sections
+                                </th>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                    <td>
+                                        <mat-checkbox></mat-checkbox>
+                                    </td>
+                                    <td>
+                                        Playschool
+                                    </td>
+                                    <td>
+                                        <mat-select placeholder="Number of sections">
+                                          <mat-option *ngFor="let sectionCount of sectionCountArray">
+                                            {{ sectionCount }}
+                                          </mat-option>
+                                        </mat-select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <mat-checkbox></mat-checkbox>
+                                    </td>
+                                    <td>
+                                        L.K.G
+                                    </td>
+                                    <td>
+                                        <mat-select placeholder="Number of sections">
+                                          <mat-option *ngFor="let sectionCount of sectionCountArray">
+                                            {{ sectionCount }}
+                                          </mat-option>
+                                        </mat-select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <mat-checkbox></mat-checkbox>
+                                    </td>
+                                    <td>
+                                        U.K.G
+                                    </td>
+                                    <td>
+                                        <mat-select placeholder="Number of sections">
+                                          <mat-option *ngFor="let sectionCount of sectionCountArray">
+                                            {{ sectionCount }}
+                                          </mat-option>
+                                        </mat-select>
+                                    </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="next($event, school.stage + 1)">NEXT</button>
+                          <button mat-raised-button type="button" class="btn btn-white pull-right" (click)="abort($event)" style="margin-right:10px;">ABORT</button>
                           <div class="clearfix"></div>
                       </form>
                   </div>

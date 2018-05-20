@@ -102,6 +102,7 @@ export class AppNetworkService {
       .then(res => {
         if (res.headers.get("roleauth")) {
           this._roleauth = res.headers.get("roleauth");
+          this.setCookie("roleauth", this._roleauth)
         }
         return res;
       });
@@ -124,6 +125,7 @@ export class AppNetworkService {
         }
         if (res.headers.get("roleauth")) {
           this._roleauth = res.headers.get("roleauth");
+          this.setCookie("roleauth", this._roleauth)
         }
         return res;
       });
@@ -142,6 +144,7 @@ export class AppNetworkService {
       .then(res => {
         if (res.headers.get("roleauth")) {
           this._roleauth = res.headers.get("roleauth");
+          this.setCookie("roleauth", this._roleauth)
         }
         return res;
       });
@@ -217,7 +220,7 @@ export class AppNetworkService {
   }
 
   //get all user roles
-  getUserRole(): Promise<any> {
+  getUserRoleAsync(): Promise<any> {
     if(this.roleList == null){
       return this.getRequest("secure/user/listRoles")
     .then(d => {
@@ -236,9 +239,18 @@ export class AppNetworkService {
     }
   }
 
+  getUserRole(): Object {
+    return this.roleList;
+  }
+
   //save school
   saveSchoolDetail(objSchool: school): Promise<any> {
     return this.postRequest("secure/school/", objSchool);
+  }
+
+  // get school details for admin
+  getSchoolForAdmin(schoolId): Promise<any> {
+    return this.getRequest("/secure/school/" + schoolId);
   }
 
   //save class detail

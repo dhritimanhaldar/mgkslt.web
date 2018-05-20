@@ -9,8 +9,9 @@ import { MatFormFieldModule } from '@angular/material';
 import { MatInputModule } from '@angular/material';
 import { MatTableModule } from '@angular/material';
 import { MatTableDataSource } from '@angular/material';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
@@ -19,7 +20,7 @@ import { AppNotificationService } from './services/app-notification.service';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { RoleComponent } from './role/role.component';
 import { SchoolCreationWizardComponent } from './school-creation-wizard/school-creation-wizard.component';
 import { BoardDialog } from './school-creation-wizard/school-creation-wizard.component';
 import { StateDialog } from './school-creation-wizard/school-creation-wizard.component';
@@ -55,10 +56,11 @@ const appInitializerFn = (appNetworkService: AppNetworkService) => {
     BrowserModule,
     HttpModule,
     MatDialogModule,
-    MatProgressSpinnerModule,
     MatFormFieldModule,
     MatInputModule,
     MatTableModule,
+    MatCheckboxModule,
+    MatSelectModule,
     AgmCoreModule.forRoot({
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
     })

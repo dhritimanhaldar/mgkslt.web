@@ -49,7 +49,7 @@
                 </tr>
               </table>
               <br>
-              <a href="{{schoolData.school.visitUrl}}" style="width: 100%" class="btn btn-rose btn-round">Visit</a>
+              <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">Visit</button>
             </div>
           </div>
           <div class="card-footer">
@@ -95,7 +95,7 @@
                 </tr>
               </table>
               <br>
-              <a href="{{schoolData.school.visitUrl}}" style="width: 100%" class="btn btn-rose btn-round">Visit</a>
+              <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">Visit</button>
             </div>
           </div>
           <div class="card-footer">
@@ -141,7 +141,7 @@
                 </tr>
               </table>
               <br>
-              <a href="{{schoolData.school.visitUrl}}" style="width: 100%" class="btn btn-rose btn-round">Visit</a>
+              <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">Visit</button>
             </div>
           </div>
           <div class="card-footer">
@@ -156,7 +156,7 @@
       <div class="row" *ngIf="showEmptyAdminView || roleList['ADMIN']">
         <div class="col col-lg-4"></div>
         <div class="col col-lg-4 text-center">
-          <button mat-raised-button type="button" class="btn btn-rose" [routerLink]="['/school']">CREATE SCHOOL</button>
+          <button mat-raised-button type="button" class="btn btn-rose" [routerLink]="['/role/schoolCreate/']">CREATE SCHOOL</button>
         </div>
         <div class="col col-lg-4"></div>
       </div>
