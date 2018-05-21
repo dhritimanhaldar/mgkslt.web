@@ -26,22 +26,25 @@ export class RoleComponent implements OnInit {
       if(this.roleList.hasOwnProperty("ADMIN") ){
         var adminSchoolData = this.roleList["ADMIN"]
         for(var roleData of adminSchoolData) {
-          roleData.school.visitUrl = roleData.school.stage < 5 ? '/role/schoolCreate/' + roleData.school.id : '/portal/' + roleData.school.id;
+          roleData.school.visitUrl = roleData.school.stage < 5 ? '/role/schoolCreate/' + roleData.school.id : '/dashboard/school/' + roleData.school.id;
+          roleData.school.displayPic = roleData.school.displayPic ? roleData.school.displayPic : "../assets/img/dummy-school-dp.jpg"
           roleData.school.displayUpdatedAt = Utils.getDisplayUpdatedAt(roleData.school.updatedAt)
         }
       } 
       if(this.roleList.hasOwnProperty("TEACHER") ){
         var teacherSchoolData = this.roleList["TEACHER"]
         for(var roleData of teacherSchoolData) {
-          roleData.school.visitUrl = roleData.school.stage < 5 ? '' : '/portal/' + roleData.school.id;
+          roleData.school.visitUrl = '/dashboard/school/' + roleData.school.id;
+          roleData.school.displayPic = roleData.school.displayPic ? roleData.school.displayPic : "../assets/img/dummy-school-dp.jpg"
           roleData.school.displayUpdatedAt = Utils.getDisplayUpdatedAt(roleData.school.updatedAt)
         }
       }
       if(this.roleList.hasOwnProperty("PARENT") ){
         var parentSchoolData = this.roleList["PARENT"]
         for(var roleData of parentSchoolData) {
-          roleData.school.visitUrl = roleData.school.stage < 5 ? '' : '/portal/' + roleData.school.id;
-          roleData.school.displayUpdatedAt = Utils.getDisplayUpdatedAt(roleData.school.updatedAt)
+          roleData.student.visitUrl = '/dashboard/student/' + roleData.student.id;
+          roleData.student.profilePicUrl = roleData.student.profilePicUrl ? roleData.student.profilePicUrl : "../assets/img/dummy-student-profilepic.png"
+          roleData.student.displayUpdatedAt = Utils.getDisplayUpdatedAt(roleData.student.updatedAt)
         }
       }
     }
