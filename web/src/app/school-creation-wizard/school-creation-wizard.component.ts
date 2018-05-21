@@ -37,6 +37,7 @@ export class SchoolCreationWizardComponent implements OnInit {
   private router: Router;
   public isDataAvailable:boolean = false;
   public classStructure;
+  private uploadedFile;
 
   constructor(private apns: AppNetworkService, private ans: AppNotificationService, public dialog: MatDialog, private rtr: Router, private route: ActivatedRoute) { 
   	this.appNetworkService = apns;
@@ -194,13 +195,19 @@ export class SchoolCreationWizardComponent implements OnInit {
   		callback(false);
   		return;
   	}
+    if(this.uploadedFile && !Utils.checkFileExtention(this.uploadedFile.name, "jpg") && !Utils.checkFileExtention(this.uploadedFile.name, "jpeg") && !Utils.checkFileExtention(this.uploadedFile.name, "png")) {
+      this.appNotificationService.notify("Please upload a jpg, jpeg or png image file", "danger")
+      callback(false);
+      return;
+    }
   	var schoolObject = {
   		name: this.school.name,
   		address: this.school.address,
   		city: this.school.city,
   		pincode: this.school.pincode,
   		boardId: this.school.board.id,
-  		stateId: this.school.state.id
+  		stateId: this.school.state.id,
+      file: this.uploadedFile
   	}
   	this.appNetworkService.saveSchoolDetail(schoolObject)
   	.then(d=> {
@@ -214,7 +221,7 @@ export class SchoolCreationWizardComponent implements OnInit {
         this.appNotificationService.notifyGenericError()
       }else if(e.status == 400 ) {
         this.appNotificationService.notify("Something is wrong with the input. Please check.","danger")
-      } else if(e.status >= 401){
+      } else if(e.status == 401){
         this.appNetworkService.deleteAllCookies()
         window.location.reload();
       }
@@ -237,78 +244,98 @@ export class SchoolCreationWizardComponent implements OnInit {
        }
      }
 
-    this.appNetworkService.saveClassDetail(reqBody, this.school.id)
+     if(reqBody.length == 0) {
+       this.appNotificationService.notify("You must select atleast 1 class","danger")
+       callback(false)
+     } else {
+       this.appNetworkService.saveClassDetail(reqBody, this.school.id)
+       .then(d => {
+         callback(true);
+       })
+       .catch(e => {
+         if(e.status >= 500) {
+            this.appNotificationService.notifyGenericError()
+          } else if(e.status == 400 ) {
+            this.appNotificationService.notify("Something is wrong with the input. Please check.","danger")
+          } else if(e.status == 401){
+            this.appNetworkService.deleteAllCookies()
+            window.location.reload();
+          }
+         callback(false)
+       })
+     }
+  }
+
+  private networkStage3(target, callback) {
+    if(this.uploadedFile == null || !Utils.checkFileExtention(this.uploadedFile.name, "csv")) {
+      this.appNotificationService.notify("Please upload the student data CSV file","danger")
+      callback(false)
+    } else {
+      this.appNetworkService.uploadStudentFile(this.uploadedFile, this.school.id)
      .then(d => {
        callback(true);
      })
      .catch(e => {
        if(e.status >= 500) {
           this.appNotificationService.notifyGenericError()
-        } else if(e.status == 400 ) {
-          this.appNotificationService.notify("Something is wrong with the input. Please check.","danger")
-        } else if(e.status >= 401){
+        }else if(e.status == 400 ) {
+          var error = JSON.parse(e._body).error
+          this.appNotificationService.notify(error,"danger")
+        } else if(e.status == 401){
           this.appNetworkService.deleteAllCookies()
           window.location.reload();
         }
        callback(false)
      })
-  }
-
-  private networkStage3(target, callback) {
-   this.appNetworkService.uploadStudentFile(this.schoolImagePreview, this.school.id)
-   .then(d => {
-     callback(true);
-   })
-   .catch(e => {
-     if(e.status >= 500) {
-        this.appNotificationService.notifyGenericError()
-      }else if(e.status == 400 ) {
-        var error = JSON.parse(e._body).error
-        this.appNotificationService.notify(error,"danger")
-      } else if(e.status >= 401){
-        this.appNetworkService.deleteAllCookies()
-        window.location.reload();
-      }
-     callback(false)
-   })
+    }
   }
 
   private networkStage4(target, callback) {
-    this.appNetworkService.teacherFileUpload(this.schoolImagePreview, this.school.id)
-   .then(d => {
-     callback(true);
-   })
-   .catch(e => {
-     if(e.status >= 500) {
-        this.appNotificationService.notifyGenericError()
-      }else if(e.status == 400 ) {
-        var error = JSON.parse(e._body).error
-        this.appNotificationService.notify(error,"danger")
-      } else if(e.status >= 401){
-        this.appNetworkService.deleteAllCookies()
-        window.location.reload();
-      }
-     callback(false)
-   })
+    if(this.uploadedFile == null || !Utils.checkFileExtention(this.uploadedFile.name, "csv")) {
+      this.appNotificationService.notify("Please upload the teacher data CSV file","danger")
+      callback(false)
+    } else {
+      this.appNetworkService.teacherFileUpload(this.uploadedFile, this.school.id)
+     .then(d => {
+       callback(true);
+     })
+     .catch(e => {
+       if(e.status >= 500) {
+          this.appNotificationService.notifyGenericError()
+        }else if(e.status == 400 ) {
+          var error = JSON.parse(e._body).error
+          this.appNotificationService.notify(error,"danger")
+        } else if(e.status == 401){
+          this.appNetworkService.deleteAllCookies()
+          window.location.reload();
+        }
+       callback(false)
+     })
+    }
   }
 
   private networkStage5(target, callback) {
-    this.appNetworkService.studentTeacherMappingFileUpload(this.schoolImagePreview, this.school.id)
-   .then(d => {
-     callback(true);
-   })
-   .catch(e => {
-     if(e.status >= 500) {
-        this.appNotificationService.notifyGenericError()
-      }else if(e.status == 400 ) {
-        var error = JSON.parse(e._body).error
-        this.appNotificationService.notify(error,"danger")
-      } else if(e.status >= 401){
-        this.appNetworkService.deleteAllCookies()
-        window.location.reload();
-      }
-     callback(false)
-   })
+    if(this.uploadedFile == null || !Utils.checkFileExtention(this.uploadedFile.name, "csv")) {
+      this.appNotificationService.notify("Please upload the subject data CSV file","danger")
+      callback(false)
+    } else {
+      this.appNetworkService.studentTeacherMappingFileUpload(this.uploadedFile, this.school.id)
+     .then(d => {
+       callback(true);
+     })
+     .catch(e => {
+       if(e.status >= 500) {
+          this.appNotificationService.notifyGenericError()
+        }else if(e.status == 400 ) {
+          var error = JSON.parse(e._body).error
+          this.appNotificationService.notify(error,"danger")
+        } else if(e.status == 401){
+          this.appNetworkService.deleteAllCookies()
+          window.location.reload();
+        }
+       callback(false)
+     })
+    }
   }
 
   dragStart(event) {
@@ -339,8 +366,12 @@ export class SchoolCreationWizardComponent implements OnInit {
 
   changeListener(event) {
   	switch(this.school.stage) {
-  		case 1: this.showImagePreview(event.target.files[0])
+  		case 0: this.showImagePreview(event.target.files[0])
   			break;
+      case 2:
+      case 3:
+      case 4: this.showFileInformation(event.target.files[0])
+        break;
   	}
   }
 
@@ -350,6 +381,7 @@ export class SchoolCreationWizardComponent implements OnInit {
   	reader.onload = function (event) {
         self.schoolImageName = file.name
         self.schoolImagePreview = reader.result
+        self.uploadedFile = file;
         self.isPreviewActive = true;
     }
     reader.readAsDataURL(file);
@@ -357,7 +389,7 @@ export class SchoolCreationWizardComponent implements OnInit {
 
   showFileInformation(file) {
     this.schoolImageName = file.name
-    this.schoolImagePreview = file
+    this.uploadedFile = file
     this.isPreviewActive = true;
   }
 
@@ -366,6 +398,7 @@ export class SchoolCreationWizardComponent implements OnInit {
   	this.isPreviewActive = false;
     this.schoolImageName = null;
     this.isActive = false;
+    this.uploadedFile = null;
   }
 
   

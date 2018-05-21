@@ -158,9 +158,14 @@ export class AppNetworkService {
   }
 
   //upload file
-  uploadFile(file, url): Promise<any> {
+  uploadFile(file, url, otherParams): Promise<any> {
     let formData:FormData = new FormData();
     formData.append('file', file, file.name);
+    if(otherParams) {
+      for(var index in otherParams) {
+        formData.append(otherParams[index]["key"], otherParams[index]["value"])
+      }
+    }
     let headers = new Headers();
     // headers.append('Content-Type', 'multipart/form-data');
     // headers.append('Accept', 'application/json');
@@ -265,8 +270,25 @@ export class AppNetworkService {
   // }
 
   //save school
-  saveSchoolDetail(objSchool: school): Promise<any> {
-    return this.postRequest("secure/school/", objSchool);
+  saveSchoolDetail(objSchool): Promise<any> {
+    var file = objSchool["file"];
+    if(file) {
+      var otherParams = [];
+      otherParams.push({"key": "name", "value": objSchool["name"]})
+      otherParams.push({"key": "city", "value": objSchool["city"]})
+      otherParams.push({"key": "pincode", "value": objSchool["pincode"]})
+      otherParams.push({"key": "address", "value": objSchool["address"]})
+      otherParams.push({"key": "boardId", "value": objSchool["boardId"]})
+      otherParams.push({"key": "stateId", "value": objSchool["stateId"]})
+      return this.uploadFile(
+        file,
+        "secure/schooldp/",
+        otherParams
+      );
+    } else {
+      return this.postRequest("secure/school/", objSchool);
+    }
+    
   }
 
   // get school details for admin
@@ -284,21 +306,24 @@ export class AppNetworkService {
   uploadStudentFile(uri, schoolId): Promise<any> {
     return this.uploadFile(
       uri,
-      "secure/app/school/" + schoolId + "/user/student"
+      "secure/app/school/" + schoolId + "/user/student",
+      null
     );
   }
 
   teacherFileUpload(uri, schoolId): Promise<any> {
     return this.uploadFile(
       uri,
-      "secure/app/school/" + schoolId + "/user/teacher"
+      "secure/app/school/" + schoolId + "/user/teacher",
+      null
     );
   }
 
   studentTeacherMappingFileUpload(uri, schoolId): Promise<any> {
     return this.uploadFile(
       uri,
-      "secure/app/school/" + schoolId + "/user/stmapping"
+      "secure/app/school/" + schoolId + "/user/stmapping",
+      null
     );
   }
 

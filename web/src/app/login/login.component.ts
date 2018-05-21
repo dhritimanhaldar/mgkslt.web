@@ -35,8 +35,10 @@ export class LoginComponent implements OnInit {
       .then(d => {
         if(d._body === "ACTIVE") {
           window.location.reload();
-        } else {
+        } else if(d._body == "REG_PASSWORD_CHANGE_PENDING"){
           this.appNotificationService.notify("Your account is not actived yet. Please go to the app to activte it", "info")
+          Utils.markActive(button, buttonContent)
+        } else {
           Utils.markActive(button, buttonContent)
         }
       }).catch(e => {

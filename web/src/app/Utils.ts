@@ -10,9 +10,9 @@ export class Utils {
 		button.innerHTML = originalButtonContent;
 	}
 
-  	public static checkFileExtention(fileName, accepts): boolean {
-    	var _reg = new RegExp("\\." + accepts.join("$|\\.") + "$", "i");
-    	return _reg.test(fileName);
+  	public static checkFileExtention(filename, accepts): boolean {
+  		var extension = filename.split('.').pop();
+  		return extension.toLowerCase() == accepts
   	}
 
   	public static getDisplayUpdatedAt(timestamp): string {
