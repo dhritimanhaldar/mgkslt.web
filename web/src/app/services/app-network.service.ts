@@ -242,7 +242,7 @@ export class AppNetworkService {
 
   //get all user roles
   getUserRoleAsync(): Promise<any> {
-    if(this.roleList == null){
+    // if(this.roleList == null){
       return this.getRequest("secure/user/listRoles")
     .then(d => {
         let data = d.json();
@@ -255,14 +255,14 @@ export class AppNetworkService {
         // this.verifyCookies(undefined, undefined);
         return false;
       });
-    } else {
-      return new Promise(this.roleList);
-    }
+    // } else {
+    //   return new Promise(this.roleList);
+    // }
   }
 
-  getUserRole(): Object {
-    return this.roleList;
-  }
+  // getUserRole(): Object {
+  //   return this.roleList;
+  // }
 
   //save school
   saveSchoolDetail(objSchool: school): Promise<any> {

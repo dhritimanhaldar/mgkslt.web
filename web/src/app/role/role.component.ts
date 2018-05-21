@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppNetworkService } from '../services/app-network.service';
+import { Utils } from '../Utils';
 
 @Component({
   selector: 'app-role',
@@ -26,16 +27,21 @@ export class RoleComponent implements OnInit {
         var adminSchoolData = this.roleList["ADMIN"]
         for(var roleData of adminSchoolData) {
           roleData.school.visitUrl = roleData.school.stage < 5 ? '/role/schoolCreate/' + roleData.school.id : '/portal/' + roleData.school.id;
+          roleData.school.displayUpdatedAt = Utils.getDisplayUpdatedAt(roleData.school.updatedAt)
         }
-      } else if(this.roleList.hasOwnProperty("TEACHER") ){
+      } 
+      if(this.roleList.hasOwnProperty("TEACHER") ){
         var teacherSchoolData = this.roleList["TEACHER"]
         for(var roleData of teacherSchoolData) {
           roleData.school.visitUrl = roleData.school.stage < 5 ? '' : '/portal/' + roleData.school.id;
+          roleData.school.displayUpdatedAt = Utils.getDisplayUpdatedAt(roleData.school.updatedAt)
         }
-      } else if(this.roleList.hasOwnProperty("PARENT") ){
+      }
+      if(this.roleList.hasOwnProperty("PARENT") ){
         var parentSchoolData = this.roleList["PARENT"]
         for(var roleData of parentSchoolData) {
           roleData.school.visitUrl = roleData.school.stage < 5 ? '' : '/portal/' + roleData.school.id;
+          roleData.school.displayUpdatedAt = Utils.getDisplayUpdatedAt(roleData.school.updatedAt)
         }
       }
     }
@@ -43,16 +49,16 @@ export class RoleComponent implements OnInit {
   
   ngOnInit() {
       this.loading = true;
-      if(this.appNetworkService.getUserRole()) {
-        this.roleList = this.appNetworkService.getUserRole()
-        this.handleRoleRouting()
-      } else {
+      // if(this.appNetworkService.getUserRole()) {
+      //   this.roleList = this.appNetworkService.getUserRole()
+      //   this.handleRoleRouting()
+      // } else {
         this.appNetworkService.getUserRoleAsync().then(d=>{
           this.loading = false;
           this.roleList = d;
           this.handleRoleRouting()
         });
-      }
+      // }
   }
 
 }

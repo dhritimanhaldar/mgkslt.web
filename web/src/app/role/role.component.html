@@ -49,12 +49,14 @@
                 </tr>
               </table>
               <br>
-              <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">Visit</button>
+              <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">
+                <span *ngIf="schoolData.school.stage < 5"><b>COMPLETE</b></span><span *ngIf="schoolData.school.stage >= 5"><b>DASHBOARD</b></span>
+              </button>
             </div>
           </div>
           <div class="card-footer">
             <div class="stats">
-              <i class="material-icons">access_time</i> created 4 minutes ago
+              <i class="material-icons">access_time</i> Last updated {{schoolData.school.displayUpdatedAt}}
             </div>
           </div>
         </div>
@@ -74,7 +76,7 @@
             <a><img src="http://md-pro-angular.creative-tim.com/assets/img/card-2.jpg" class="img"></a>
           </div>
           <div class="card-body">
-            <h4 class="card-title">{{ schoolData.school.name }}</h4>
+            <h4 class="card-title">{{ (schoolData.school.name.length>20)? (schoolData.school.name | slice:0:20)+'...':(schoolData.school.name) }}</h4>
             <div class="card-description">
               <table>
                 <tr>
@@ -82,7 +84,7 @@
                     <i class="fa fa-graduation-cap" aria-hidden="true"></i>
                   </td>
                   <td>
-                    {{ schoolData.school.boardName }}
+                    {{ (schoolData.school.boardName.length>20)? (schoolData.school.boardName | slice:0:20)+'...':(schoolData.school.boardName) }}
                   </td>
                 </tr>
                 <tr>
@@ -95,12 +97,14 @@
                 </tr>
               </table>
               <br>
-              <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">Visit</button>
+              <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">
+                <span *ngIf="schoolData.school.stage < 5"><b>COMPLETE</b></span><span *ngIf="schoolData.school.stage >= 5"><b>DASHBOARD</b></span>
+              </button>
             </div>
           </div>
           <div class="card-footer">
             <div class="stats">
-              <i class="material-icons">access_time</i> created 4 minutes ago
+              <i class="material-icons">access_time</i> Last updated {{schoolData.school.displayUpdatedAt}}
             </div>
           </div>
         </div>
@@ -120,7 +124,7 @@
             <a><img src="http://md-pro-angular.creative-tim.com/assets/img/card-2.jpg" class="img"></a>
           </div>
           <div class="card-body">
-            <h4 class="card-title">{{ schoolData.school.name }}</h4>
+            <h4 class="card-title">{{ (schoolData.school.name.length>20)? (schoolData.school.name | slice:0:20)+'...':(schoolData.school.name) }}</h4>
             <div class="card-description">
               <table>
                 <tr>
@@ -128,7 +132,7 @@
                     <i class="fa fa-graduation-cap" aria-hidden="true"></i>
                   </td>
                   <td>
-                    {{ schoolData.school.boardName }}
+                    {{ (schoolData.school.boardName.length>20)? (schoolData.school.boardName | slice:0:20)+'...':(schoolData.school.boardName) }}
                   </td>
                 </tr>
                 <tr>
@@ -141,25 +145,18 @@
                 </tr>
               </table>
               <br>
-              <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">Visit</button>
+              <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">
+                <span *ngIf="schoolData.school.stage < 5"><b>COMPLETE</b></span><span *ngIf="schoolData.school.stage >= 5"><b>DASHBOARD</b></span>
+              </button>
             </div>
           </div>
           <div class="card-footer">
             <div class="stats">
-              <i class="material-icons">access_time</i> created 4 minutes ago
+              <i class="material-icons">access_time</i> Last updated {{schoolData.school.displayUpdatedAt}}
             </div>
           </div>
         </div>
       </div>
     </div>
-      
-      <div class="row" *ngIf="showEmptyAdminView || roleList['ADMIN']">
-        <div class="col col-lg-4"></div>
-        <div class="col col-lg-4 text-center">
-          <button mat-raised-button type="button" class="btn btn-rose" [routerLink]="['/role/schoolCreate/']">CREATE SCHOOL</button>
-        </div>
-        <div class="col col-lg-4"></div>
-      </div>
-    
   </div>
 </div>

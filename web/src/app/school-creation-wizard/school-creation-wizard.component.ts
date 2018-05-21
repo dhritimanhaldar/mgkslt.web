@@ -263,7 +263,8 @@ export class SchoolCreationWizardComponent implements OnInit {
      if(e.status >= 500) {
         this.appNotificationService.notifyGenericError()
       }else if(e.status == 400 ) {
-        this.appNotificationService.notify("Something is wrong with the input. Please check.","danger")
+        var error = JSON.parse(e._body).error
+        this.appNotificationService.notify(error,"danger")
       } else if(e.status >= 401){
         this.appNetworkService.deleteAllCookies()
         window.location.reload();
@@ -281,7 +282,8 @@ export class SchoolCreationWizardComponent implements OnInit {
      if(e.status >= 500) {
         this.appNotificationService.notifyGenericError()
       }else if(e.status == 400 ) {
-        this.appNotificationService.notify("Something is wrong with the input. Please check.","danger")
+        var error = JSON.parse(e._body).error
+        this.appNotificationService.notify(error,"danger")
       } else if(e.status >= 401){
         this.appNetworkService.deleteAllCookies()
         window.location.reload();
@@ -299,7 +301,8 @@ export class SchoolCreationWizardComponent implements OnInit {
      if(e.status >= 500) {
         this.appNotificationService.notifyGenericError()
       }else if(e.status == 400 ) {
-        this.appNotificationService.notify("Something is wrong with the input. Please check.","danger")
+        var error = JSON.parse(e._body).error
+        this.appNotificationService.notify(error,"danger")
       } else if(e.status >= 401){
         this.appNetworkService.deleteAllCookies()
         window.location.reload();
