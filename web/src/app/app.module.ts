@@ -20,6 +20,7 @@ import { AppNotificationService } from './services/app-notification.service';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { RoleComponent } from './role/role.component';
 import { SchoolCreationWizardComponent } from './school-creation-wizard/school-creation-wizard.component';
 import { BoardDialog } from './school-creation-wizard/school-creation-wizard.component';

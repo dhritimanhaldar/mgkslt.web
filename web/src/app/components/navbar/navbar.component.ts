@@ -14,12 +14,12 @@ export class NavbarComponent implements OnInit {
     location: Location;
     mobile_menu_visible: any = 0;
     private toggleButton: any;
-    private sidebarVisible: boolean;
+    private sidebarVisible: boolean = true;
     private appNetworkService: AppNetworkService;
 
     constructor(location: Location,  private element: ElementRef, private router: Router, private apns: AppNetworkService) {
       this.location = location;
-      this.sidebarVisible = false;
+      this.sidebarVisible = true;
       this.appNetworkService = apns;
     }
 

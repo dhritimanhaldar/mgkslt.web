@@ -6,6 +6,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminLayoutRoutes } from './admin-layout.routing';
 import { LoginComponent } from '../../login/login.component';
+import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { RoleComponent } from '../../role/role.component';
 import { SchoolCreationWizardComponent } from '../../school-creation-wizard/school-creation-wizard.component';
 import { UserProfileComponent } from '../../user-profile/user-profile.component';
@@ -36,6 +37,7 @@ import {
   ],
   declarations: [
     LoginComponent,
+    DashboardComponent,
     RoleComponent,
     SchoolCreationWizardComponent,
     UserProfileComponent,
