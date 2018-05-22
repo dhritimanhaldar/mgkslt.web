@@ -26,7 +26,7 @@ export class AdminLayoutComponent implements OnInit {
       this.isNavBarActive = false;
     }
     router.events.subscribe((val) => {
-        if(val instanceof NavigationEnd && ((val.url.indexOf("/dashboard/admin/") > -1) || (val.url.indexOf("/user-profile/") > -1))) {
+        if(val instanceof NavigationEnd && ((val.url.indexOf("/dashboard/admin/") > -1) || (val.url.indexOf("/user-profile") > -1))) {
           this.isSideBarActive = true;
         } else {
           this.isSideBarActive = false;
