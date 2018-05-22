@@ -49,9 +49,10 @@
                 </tr>
               </table>
               <br>
-              <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">
-                <span *ngIf="schoolData.school.stage < 5"><b>CONTINUE</b></span><span *ngIf="schoolData.school.stage >= 5"><b>DASHBOARD</b></span>
+              <button *ngIf="schoolData.school.stage < 5" type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">
+                <span><b>CONTINUE</b></span>
               </button>
+              <div *ngIf="schoolData.school.stage == 5" style="width:1px; height:52px"></div>
             </div>
           </div>
           <div class="card-footer">
@@ -97,9 +98,9 @@
                 </tr>
               </table>
               <br>
-              <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">
+              <!-- <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">
                 <span *ngIf="schoolData.school.stage < 5"><b>CONTINUE</b></span><span *ngIf="schoolData.school.stage >= 5"><b>DASHBOARD</b></span>
-              </button>
+              </button> -->
             </div>
           </div>
           <div class="card-footer">
@@ -145,9 +146,9 @@
                       </tr>
                     </table>
                     <br>
-                    <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.student.visitUrl]">
+                    <!-- <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.student.visitUrl]">
                       <span><b>DASHBOARD</b></span>
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
