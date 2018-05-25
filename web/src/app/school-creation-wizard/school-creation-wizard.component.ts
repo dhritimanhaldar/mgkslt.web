@@ -180,7 +180,7 @@ export class SchoolCreationWizardComponent implements OnInit {
       break;
       case 5: this.networkStage5(event.target, success => {
         if(success){
-            this.router.navigateByUrl("/role/schoolCreate/")
+            this.router.navigateByUrl("/role")
         } else {
           Utils.markActive(button, originalTargetHtml)
         }
@@ -321,6 +321,7 @@ export class SchoolCreationWizardComponent implements OnInit {
     } else {
       this.appNetworkService.studentTeacherMappingFileUpload(this.uploadedFile, this.school.id)
      .then(d => {
+       this.appNotificationService.notify("Congratulations! Your school has been successfully created", "info")
        callback(true);
      })
      .catch(e => {
