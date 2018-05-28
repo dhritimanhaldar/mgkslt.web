@@ -8,11 +8,11 @@
             <p class="card-category">Schools you are admin at</p>
         </div>
       </div>
-      <div class="col col-lg-4"></div>
+      <div class="col col-lg-4 col-md-4 col-sm-4"></div>
         <div class="col col-lg-4 text-center">
           <p style="color:grey;font-style: italic;">You have not created any school</p>
         </div>
-        <div class="col col-lg-4"></div>
+        <div class="col col-lg-4 col-md-4 col-sm-4"></div>
     </div>
 
     <div class="row" *ngIf="roleList['ADMIN']">        
@@ -22,10 +22,10 @@
             <p class="card-category">Schools you are admin at</p>
         </div>
       </div>
-      <div class="col-md-2" *ngFor="let schoolData of roleList['ADMIN']">
+      <div class="col-md-4 col-lg-2 col-sm-4" *ngFor="let schoolData of roleList['ADMIN']">
         <div class="card card-product">
           <div class="card-header card-header-image">
-            <a><img [src]="schoolData.school.displayPic" style="width:215px;height:158px" class="img"></a>
+            <a><div [style.background-image]="'url(' + schoolData.school.displayPic + ')'" class="schoolDP"></div></a>
           </div>
           <div class="card-body">
             <h4 class="card-title">{{ (schoolData.school.name.length>20)? (schoolData.school.name | slice:0:20)+'...':(schoolData.school.name) }}</h4>
@@ -71,10 +71,10 @@
             <p class="card-category">Schools you are teacher at</p>
         </div>
       </div>
-      <div class="col-md-2" *ngFor="let schoolData of roleList['TEACHER']">
+      <div class="col-md-4 col-lg-2 col-sm-4" *ngFor="let schoolData of roleList['TEACHER']">
         <div class="card card-product">
           <div class="card-header card-header-image">
-            <a><img [src]="schoolData.school.displayPic" style="width:215px;height:158px" class="img"></a>
+            <a><div [style.background-image]="'url(' + schoolData.school.displayPic + ')'" class="schoolDP"></div></a>
           </div>
           <div class="card-body">
             <h4 class="card-title">{{ (schoolData.school.name.length>20)? (schoolData.school.name | slice:0:20)+'...':(schoolData.school.name) }}</h4>
@@ -119,7 +119,7 @@
             <p class="card-category">List of your children</p>
         </div>
       </div>
-      <div class="col-md-2" *ngFor="let schoolData of roleList['PARENT']">
+      <div class="col-md-4 col-lg-2 col-sm-4" *ngFor="let schoolData of roleList['PARENT']">
         <div class="card card-profile">
             <div class="card-avatar">
               <a><img [src]="schoolData.student.profilePicUrl" class="img" style="background-color: #e91e63"></a>

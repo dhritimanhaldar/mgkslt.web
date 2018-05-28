@@ -212,8 +212,8 @@ export class SchoolCreationWizardComponent implements OnInit {
   	this.appNetworkService.saveSchoolDetail(schoolObject)
   	.then(d=> {
   		var data = d.json();
-  		this.school.id = data.schoolId
-  		this.adminId = data.adminId
+  		this.school.id = data.map.schoolId
+  		this.adminId = data.map.adminId
       callback(true);
   	})
   	.catch(e => {

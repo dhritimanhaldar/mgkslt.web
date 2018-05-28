@@ -23,7 +23,7 @@ export class AppNetworkService {
   private _token: string;
   private _roleauth: string;
   private cookieService:CookieService;
-  private baseWebUrl: string = "//www.mgkslt.com"
+  private versionString: string = "v1";
   private roles = ["ADMIN", "TEACHER", "PARENT"];
   private roleList = null;
   private user = null;
@@ -178,7 +178,12 @@ export class AppNetworkService {
 
   //get url
   getUrl(url): string {
-    return this._baseUrl + url;
+    if(url == "board/list" || url == "state/list" || url == ""){
+      return this._baseUrl + url;
+    } else {
+      return this._baseUrl + this.versionString + "/" + url;
+    }
+    
   }
 
   login(phone: string, password: string): Promise<any> {
