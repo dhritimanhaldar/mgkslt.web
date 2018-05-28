@@ -24,8 +24,8 @@
       </div>
       <div class="col-md-2" *ngFor="let schoolData of roleList['ADMIN']">
         <div class="card card-product">
-          <div class="card-header card-header-image" style="width:215px;height:158px">
-            <a><img [src]="schoolData.school.displayPic" class="img"></a>
+          <div class="card-header card-header-image">
+            <a><img [src]="schoolData.school.displayPic" style="width:215px;height:158px" class="img"></a>
           </div>
           <div class="card-body">
             <h4 class="card-title">{{ (schoolData.school.name.length>20)? (schoolData.school.name | slice:0:20)+'...':(schoolData.school.name) }}</h4>
@@ -73,8 +73,8 @@
       </div>
       <div class="col-md-2" *ngFor="let schoolData of roleList['TEACHER']">
         <div class="card card-product">
-          <div class="card-header card-header-image" style="width:215px;height:158px">
-            <a><img [src]="schoolData.school.displayPic" class="img"></a>
+          <div class="card-header card-header-image">
+            <a><img [src]="schoolData.school.displayPic" style="width:215px;height:158px" class="img"></a>
           </div>
           <div class="card-body">
             <h4 class="card-title">{{ (schoolData.school.name.length>20)? (schoolData.school.name | slice:0:20)+'...':(schoolData.school.name) }}</h4>
