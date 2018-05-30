@@ -279,7 +279,7 @@ export class SchoolCreationWizardComponent implements OnInit {
        if(e.status >= 500) {
           this.appNotificationService.notifyGenericError()
         }else if(e.status == 400 ) {
-          var error = JSON.parse(e._body).error
+          var error = JSON.parse(e._body).map.error
           this.appNotificationService.notify(error,"danger")
         } else if(e.status == 401){
           this.appNetworkService.deleteAllCookies()
@@ -303,7 +303,7 @@ export class SchoolCreationWizardComponent implements OnInit {
        if(e.status >= 500) {
           this.appNotificationService.notifyGenericError()
         }else if(e.status == 400 ) {
-          var error = JSON.parse(e._body).error
+          var error = JSON.parse(e._body).map.error
           this.appNotificationService.notify(error,"danger")
         } else if(e.status == 401){
           this.appNetworkService.deleteAllCookies()
@@ -328,7 +328,7 @@ export class SchoolCreationWizardComponent implements OnInit {
        if(e.status >= 500) {
           this.appNotificationService.notifyGenericError()
         }else if(e.status == 400 ) {
-          var error = JSON.parse(e._body).error
+          var error = JSON.parse(e._body).map.error
           this.appNotificationService.notify(error,"danger")
         } else if(e.status == 401){
           this.appNetworkService.deleteAllCookies()
