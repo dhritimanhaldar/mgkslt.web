@@ -23,7 +23,7 @@ export class AppNetworkService {
   private _token: string;
   private _roleauth: string;
   private cookieService:CookieService;
-  private baseWebUrl: string = "//www.mgkslt.com"
+  private versionString: string = "v1";
   private roles = ["ADMIN", "TEACHER", "PARENT"];
   private roleList = null;
   private user = null;
@@ -82,17 +82,6 @@ export class AppNetworkService {
       }
       return true;
     }
-
-    // verifyCookies(authCookie: string, roleauthCookie: string) {
-    //   if(!authCookie) {
-    //     this.redirectToLogin()
-    //     return;
-    //   }
-    //   if(roleauthCookie){
-    //     this.redirectToPortal()
-    //     return;
-    //   }
-    // }
 
   // HTTP REQUESTS WRAPPERS - GET, POST, PATCH
 
@@ -189,7 +178,12 @@ export class AppNetworkService {
 
   //get url
   getUrl(url): string {
-    return this._baseUrl + url;
+    if(url == "board/list" || url == "state/list" || url == ""){
+      return this._baseUrl + url;
+    } else {
+      return this._baseUrl + this.versionString + "/" + url;
+    }
+    
   }
 
   login(phone: string, password: string): Promise<any> {
@@ -298,7 +292,7 @@ export class AppNetworkService {
 
   //save class detail
   saveClassDetail(objClass, schoolId): Promise<any> {
-    return this.postRequest("secure/app/school/"+schoolId+"/class",  objClass);
+    return this.postRequest("secure/app/class",  objClass);
   }
 
   // FILE UPLOADS
@@ -306,7 +300,7 @@ export class AppNetworkService {
   uploadStudentFile(uri, schoolId): Promise<any> {
     return this.uploadFile(
       uri,
-      "secure/app/school/" + schoolId + "/user/student",
+      "secure/app/user/student",
       null
     );
   }
@@ -314,7 +308,7 @@ export class AppNetworkService {
   teacherFileUpload(uri, schoolId): Promise<any> {
     return this.uploadFile(
       uri,
-      "secure/app/school/" + schoolId + "/user/teacher",
+      "secure/app/user/teacher",
       null
     );
   }
@@ -322,7 +316,7 @@ export class AppNetworkService {
   studentTeacherMappingFileUpload(uri, schoolId): Promise<any> {
     return this.uploadFile(
       uri,
-      "secure/app/school/" + schoolId + "/user/stmapping",
+      "secure/app/user/stmapping",
       null
     );
   }

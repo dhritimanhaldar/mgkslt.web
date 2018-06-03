@@ -50,7 +50,12 @@ export class SchoolCreationWizardComponent implements OnInit {
       "levelName": "Preschool",
       "structure": [
         {
-          "standard": "Playschool",
+          "standard": "Pre-Nursery",
+          "selected": false,
+          "sectionCount": 1
+        },
+        {
+          "standard": "Nursery",
           "selected": false,
           "sectionCount": 1
         },
@@ -180,7 +185,7 @@ export class SchoolCreationWizardComponent implements OnInit {
       break;
       case 5: this.networkStage5(event.target, success => {
         if(success){
-            this.router.navigateByUrl("/role/schoolCreate/")
+            this.router.navigateByUrl("/role")
         } else {
           Utils.markActive(button, originalTargetHtml)
         }
@@ -212,8 +217,8 @@ export class SchoolCreationWizardComponent implements OnInit {
   	this.appNetworkService.saveSchoolDetail(schoolObject)
   	.then(d=> {
   		var data = d.json();
-  		this.school.id = data.schoolId
-  		this.adminId = data.adminId
+  		this.school.id = data.map.schoolId
+  		this.adminId = data.map.adminId
       callback(true);
   	})
   	.catch(e => {
@@ -279,7 +284,7 @@ export class SchoolCreationWizardComponent implements OnInit {
        if(e.status >= 500) {
           this.appNotificationService.notifyGenericError()
         }else if(e.status == 400 ) {
-          var error = JSON.parse(e._body).error
+          var error = JSON.parse(e._body).map.error
           this.appNotificationService.notify(error,"danger")
         } else if(e.status == 401){
           this.appNetworkService.deleteAllCookies()
@@ -303,7 +308,7 @@ export class SchoolCreationWizardComponent implements OnInit {
        if(e.status >= 500) {
           this.appNotificationService.notifyGenericError()
         }else if(e.status == 400 ) {
-          var error = JSON.parse(e._body).error
+          var error = JSON.parse(e._body).map.error
           this.appNotificationService.notify(error,"danger")
         } else if(e.status == 401){
           this.appNetworkService.deleteAllCookies()
@@ -321,13 +326,14 @@ export class SchoolCreationWizardComponent implements OnInit {
     } else {
       this.appNetworkService.studentTeacherMappingFileUpload(this.uploadedFile, this.school.id)
      .then(d => {
+       this.appNotificationService.notify("Congratulations! Your school has been successfully created", "info")
        callback(true);
      })
      .catch(e => {
        if(e.status >= 500) {
           this.appNotificationService.notifyGenericError()
         }else if(e.status == 400 ) {
-          var error = JSON.parse(e._body).error
+          var error = JSON.parse(e._body).map.error
           this.appNotificationService.notify(error,"danger")
         } else if(e.status == 401){
           this.appNetworkService.deleteAllCookies()

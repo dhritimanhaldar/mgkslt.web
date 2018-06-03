@@ -33,9 +33,11 @@ export class LoginComponent implements OnInit {
       Utils.markBusy(button)
       this.appNetworkService.login(phone, this.user.password)
       .then(d => {
-        if(d._body === "ACTIVE") {
+        var data = d.json();
+        var status = data.map.status
+        if(status === "ACTIVE") {
           window.location.reload();
-        } else if(d._body == "REG_PASSWORD_CHANGE_PENDING"){
+        } else if(status == "REG_PASSWORD_CHANGE_PENDING"){
           this.appNotificationService.notify("Your account is not actived yet. Please go to the app to activte it", "info")
           Utils.markActive(button, buttonContent)
         } else {

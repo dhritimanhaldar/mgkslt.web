@@ -8,11 +8,11 @@
             <p class="card-category">Schools you are admin at</p>
         </div>
       </div>
-      <div class="col col-lg-4"></div>
+      <div class="col col-lg-4 col-md-4 col-sm-4"></div>
         <div class="col col-lg-4 text-center">
           <p style="color:grey;font-style: italic;">You have not created any school</p>
         </div>
-        <div class="col col-lg-4"></div>
+        <div class="col col-lg-4 col-md-4 col-sm-4"></div>
     </div>
 
     <div class="row" *ngIf="roleList['ADMIN']">        
@@ -22,10 +22,10 @@
             <p class="card-category">Schools you are admin at</p>
         </div>
       </div>
-      <div class="col-md-2" *ngFor="let schoolData of roleList['ADMIN']">
+      <div class="col-md-4 col-lg-2 col-sm-4" *ngFor="let schoolData of roleList['ADMIN']">
         <div class="card card-product">
           <div class="card-header card-header-image">
-            <a><img [src]="schoolData.school.displayPic" class="img"></a>
+            <a><div [style.background-image]="'url(' + schoolData.school.displayPic + ')'" class="schoolDP"></div></a>
           </div>
           <div class="card-body">
             <h4 class="card-title">{{ (schoolData.school.name.length>20)? (schoolData.school.name | slice:0:20)+'...':(schoolData.school.name) }}</h4>
@@ -49,9 +49,10 @@
                 </tr>
               </table>
               <br>
-              <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">
-                <span *ngIf="schoolData.school.stage < 5"><b>CONTINUE</b></span><span *ngIf="schoolData.school.stage >= 5"><b>DASHBOARD</b></span>
+              <button *ngIf="schoolData.school.stage < 5" type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">
+                <span><b>CONTINUE</b></span>
               </button>
+              <div *ngIf="schoolData.school.stage == 5" style="width:1px; height:52px"></div>
             </div>
           </div>
           <div class="card-footer">
@@ -70,10 +71,10 @@
             <p class="card-category">Schools you are teacher at</p>
         </div>
       </div>
-      <div class="col-md-2" *ngFor="let schoolData of roleList['TEACHER']">
+      <div class="col-md-4 col-lg-2 col-sm-4" *ngFor="let schoolData of roleList['TEACHER']">
         <div class="card card-product">
           <div class="card-header card-header-image">
-            <a><img [src]="schoolData.school.displayPic" class="img"></a>
+            <a><div [style.background-image]="'url(' + schoolData.school.displayPic + ')'" class="schoolDP"></div></a>
           </div>
           <div class="card-body">
             <h4 class="card-title">{{ (schoolData.school.name.length>20)? (schoolData.school.name | slice:0:20)+'...':(schoolData.school.name) }}</h4>
@@ -97,9 +98,9 @@
                 </tr>
               </table>
               <br>
-              <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">
+              <!-- <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.school.visitUrl]">
                 <span *ngIf="schoolData.school.stage < 5"><b>CONTINUE</b></span><span *ngIf="schoolData.school.stage >= 5"><b>DASHBOARD</b></span>
-              </button>
+              </button> -->
             </div>
           </div>
           <div class="card-footer">
@@ -118,7 +119,7 @@
             <p class="card-category">List of your children</p>
         </div>
       </div>
-      <div class="col-md-2" *ngFor="let schoolData of roleList['PARENT']">
+      <div class="col-md-4 col-lg-2 col-sm-4" *ngFor="let schoolData of roleList['PARENT']">
         <div class="card card-profile">
             <div class="card-avatar">
               <a><img [src]="schoolData.student.profilePicUrl" class="img" style="background-color: #e91e63"></a>
@@ -145,9 +146,9 @@
                       </tr>
                     </table>
                     <br>
-                    <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.student.visitUrl]">
+                    <!-- <button type="button" class="btn btn-rose btn-round" style="width: 100%" [routerLink]="[schoolData.student.visitUrl]">
                       <span><b>DASHBOARD</b></span>
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
