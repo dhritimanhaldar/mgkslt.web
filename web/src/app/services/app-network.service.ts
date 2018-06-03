@@ -18,7 +18,7 @@ export class school {
 @Injectable()
 export class AppNetworkService {
   private appConfig;
-  private _baseUrl = "https://sg.mgkslt.com/";
+  private _baseUrl = "___BASE_SERVER_URL___";
 
   private _token: string;
   private _roleauth: string;
