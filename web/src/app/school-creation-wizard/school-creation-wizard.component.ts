@@ -50,7 +50,12 @@ export class SchoolCreationWizardComponent implements OnInit {
       "levelName": "Preschool",
       "structure": [
         {
-          "standard": "Playschool",
+          "standard": "Pre-Nursery",
+          "selected": false,
+          "sectionCount": 1
+        },
+        {
+          "standard": "Nursery",
           "selected": false,
           "sectionCount": 1
         },
