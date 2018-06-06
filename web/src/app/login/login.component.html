@@ -3,32 +3,36 @@
 
     <div class="row">
       <div class="col col-md-4"></div>
-        <div class="col col-md-4 text-center">
-          <div class="card">
+      <div class="col col-md-4 text-center">
+        <div class="card login-card">
             <div class="card-body">
               <br>
-              <img src="../assets/img/PinkLogo.png" width="100px" style="border: 1px solid #ccc;border-radius: 50%">
+              <img src="../assets/img/PinkLogo.png" width="100px" style="border-radius: 50%;">
               <br><br>
-              <h1 class="card-title">MagiKslate</h1>
+              <h2 class="card-title" style="color:#fff">magiKslate</h2>
               <form>
                 <div class="row">
-                  <div class="col col-lg-12">
+                  <div class="col col-lg-2"></div>
+                  <div class="col col-lg-8">
                     <mat-form-field class="example-full-width">
-                      <input [(ngModel)]="user.phone" name="phone" matInput placeholder="Phone Number" type="text" required>
+                      <input [(ngModel)]="user.phone" name="phone" style="color: #fff;caret-color: #fff;" matInput placeholder="Phone Number" type="text" required>
                     </mat-form-field>
                     <mat-form-field class="example-full-width">
-                      <input [(ngModel)]="user.password" name="password" matInput placeholder="Password" type="password" required>
+                      <input [(ngModel)]="user.password" name="password" style="color: #fff;caret-color: #fff;" matInput placeholder="Password" type="password" required>
                     </mat-form-field>
                   </div>
+                  <div class="col col-lg-2"></div>
                 </div>
-                <button mat-raised-button type="button" class="btn btn-rose" (click)="login($event)">SIGN IN</button>
+                <br>
+                <button mat-raised-button type="button" class="btn btn-white col-lg-8" style="box-shadow: 0px 0px 8px 0px rgba(112,112,112,1);" (click)="login($event)">SIGN IN</button>
+                <br><br>
                 <div class="clearfix"></div>
               </form>
             </div>
           </div>
         </div>
         <div class="col col-md-4"></div>
-    </div>
+      </div>
 
+    </div>
   </div>
-</div>
