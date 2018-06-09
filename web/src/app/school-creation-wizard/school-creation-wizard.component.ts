@@ -54,7 +54,7 @@ export class SchoolCreationWizardComponent implements OnInit {
           "selected": false,
           "sectionCount": 1
         },
-        {
+        {  
           "standard": "Nursery",
           "selected": false,
           "sectionCount": 1

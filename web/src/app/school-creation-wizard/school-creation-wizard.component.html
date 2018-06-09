@@ -1,241 +1,251 @@
 <div *ngIf="this.isDataAvailable" class="main-content">
   <div class="container-fluid">
-      
-      <div class="row">
 
-        <div class="col col-lg-1"></div>
-        <div class="col col-lg-10 text-center">
-          <ul class="step-progress step-progress-rose text-center">
-            <span *ngFor="let stg of [0,1,2,3,4]">
-              <li [ngClass]="{'step-progress-active' : stg == school.stage, 'step-progress-complete': stg < school.stage, 'step-progress-incomplete' : stg > school.stage}">
-                {{stg + 1}}
-              </li>
-              <li *ngIf="stg < 4">
-                <hr>
-              </li>
-            </span>
-          </ul>
+    <div class="row">
+
+      <div class="col col-lg-1"></div>
+      <div class="col col-lg-10 text-center">
+        <ul class="step-progress step-progress-rose text-center">
+          <span *ngFor="let stg of [0,1,2,3,4]">
+            <li [ngClass]="{'step-progress-active' : stg == school.stage, 'step-progress-complete': stg < school.stage, 'step-progress-incomplete' : stg > school.stage}">
+              {{stg + 1}}
+            </li>
+            <li *ngIf="stg < 4">
+              <hr>
+            </li>
+          </span>
+        </ul>
+      </div>
+      <div class="col col-lg-1"></div>
+
+    </div>
+    <br>
+    <div class="row">
+      <div class="col col-lg-1"></div>
+      <div class="col col-lg-10">
+
+        <!-- STAGE 1 -->
+        <div class="card" *ngIf="school.stage == 0">
+          <div class="card-header card-header-rose">
+            <h4 class="card-title">Basic Information</h4>
+            <p class="card-category">Tell us about your school</p>
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="row">
+                <div class="col col-lg-6">
+                  <div [ngClass]="{'drop-zone': !isActive && !isPreviewActive, 'drop-zone-highlighted': isActive && !isPreviewActive, 'text-center': true , 'drop-zone-unmarked': isPreviewActive}" (dragenter)="dragStart($event)" (dragover)="dragOver($event)" (dragleave)="dragEnd($event)" (drop)="onDrop($event)">
+                    <div [ngClass]="{'schoolImagePreviewOff': !isPreviewActive, 'drop-zone-crosslabel': isPreviewActive}">
+                      <span style="cursor:pointer" (click)="clearPreview()">CLEAR</span>
+                    </div>
+                    <span [ngClass]="{'schoolImagePreviewOff': isPreviewActive, 'drop-zone-label': !isPreviewActive }">
+                      Drag & Drop you School's Display Picture<br>OR<br>
+                      <div mat-raised-button class="btn btn-rose text-center" style="font-weight: normal">
+                        Upload Image<input type="file" class="drop-zone-input" (change)="changeListener($event)"/>
+                      </div>
+                    </span>
+                    <img [ngClass]="{'schoolImagePreview': isPreviewActive, 'schoolImagePreviewOff': !isPreviewActive}" [src]="schoolImagePreview">
+                  </div>
+                </div>
+                <div class="col col-lg-6">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="school.name" name="name" matInput placeholder="School Name" type="text" required>
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width" (click)="openBoardDialog()">
+                    <input disabled="true" [value]="school.board ? school.board.name : ''" name="board" matInput placeholder="Board" type="text">
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width">
+                    <textarea [(ngModel)]="school.address" name="address" matInput placeholder="Address" required></textarea>
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="school.city" name="city" matInput placeholder="City" type="text" required>
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width" (click)="openStateDialog()">
+                    <input disabled="true" [value]="school.state ? school.state.name : ''" name="state" matInput placeholder="State" type="text">
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="school.pincode " matInput  name="pincode" placeholder="Pincode" type="text" required>
+                  </mat-form-field>
+                </div>
+              </div>
+              <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="next($event, school.stage + 1)">NEXT</button>
+              <button mat-raised-button type="button" class="btn btn-white pull-right" (click)="abort($event)" style="margin-right:10px;">ABORT</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
         </div>
-        <div class="col col-lg-1"></div>
+
+        <!-- STAGE 2 -->
+        <div class="card" *ngIf="school.stage == 1">
+          <div class="card-header card-header-rose">
+            <h4 class="card-title">Class Information</h4>
+            <p class="card-category">How many classes does {{school.name}} have?</p>
+          </div>
+          <div class="card-body">
+            <form>
+              <div *ngFor="let cs of classStructure">
+                <h3 class="card-title">{{cs.levelName}}</h3>
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class="text-rose">
+                      <th>
+                        Select
+                      </th>
+                      <th>
+                        Standard
+                      </th>
+                      <th>
+                        Sections
+                      </th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let st of cs.structure">
+                        <td>
+                          <mat-checkbox [checked]="st.selected" [(ngModel)]="st.selected" name="{{st.standard}}-selected"></mat-checkbox>
+                        </td>
+                        <td>
+                          {{st.standard}}
+                        </td>
+                        <td>
+                          <mat-select placeholder="Number of sections" [(ngModel)]="st.sectionCount" name="{{st.standard}}-sectioncount">
+                            <mat-option *ngFor="let sectionCount of sectionCountArray" [value]="sectionCount">
+                              {{ sectionCount }}
+                            </mat-option>
+                          </mat-select>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="next($event, school.stage + 1)">NEXT</button>
+              <button mat-raised-button type="button" class="btn btn-white pull-right" (click)="abort($event)" style="margin-right:10px;">ABORT</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+
+        <!-- STAGE 3 -->
+        <div class="card" *ngIf="school.stage == 2">
+          <div class="card-header card-header-rose">
+            <h4 class="card-title">Student Information</h4>
+            <p class="card-category">Upload the students data for {{school.name}}</p>
+          </div>
+          <div class="card-body">
+            <div>You can download the <a href="https://s3.us-east-2.amazonaws.com/mgkslt-prod-public/schoolCreation/Students.xlsx.csv" style="color:#007dff" download>sample file</a> for reference.</div>
+            <div class="pull-right">
+              <!-- <mat-button-toggle-group #inputType="inputType">
+                <mat-button-toggle value="csv">
+                  <mat-icon>format_align_left</mat-icon>
+                </mat-button-toggle>
+                <mat-button-toggle value="keyin">
+                  <mat-icon>format_align_right</mat-icon>
+                </mat-button-toggle>
+              </mat-button-toggle-group> -->
+            </div>
+            <br>
+            <form>
+              <div class="row">
+                <div class="col col-lg-12">
+                  <div [ngClass]="{'drop-zone': !isActive && !isPreviewActive, 'drop-zone-highlighted': isActive && !isPreviewActive, 'text-center': true , 'drop-zone-unmarked': isPreviewActive}" (dragenter)="dragStart($event)" (dragover)="dragOver($event)" (dragleave)="dragEnd($event)" (drop)="onDrop($event)" style="height: 250px">
+                    <div [ngClass]="{'schoolImagePreviewOff': !isPreviewActive, 'drop-zone-crosslabel': isPreviewActive}">
+                      <span style="cursor:pointer" (click)="clearPreview()">CLEAR</span>
+                    </div>
+                    <span [ngClass]="{'schoolImagePreviewOff': isPreviewActive, 'drop-zone-label': !isPreviewActive }" style="margin-top:80px">
+                      Drag & Drop Student Data CSV file here<br>OR<br>
+                      <div mat-raised-button class="btn btn-rose text-center" style="font-weight: normal">
+                        Upload File<input type="file" class="drop-zone-input" (change)="changeListener($event)"/>
+                      </div>
+                    </span>
+                    <div [ngClass]="{'schoolFilePreview': isPreviewActive, 'schoolImagePreviewOff': !isPreviewActive}">
+                      <span class="drop-zone-label" style="margin-top:130px;color:#e91e63"><i class="fa fa-file-excel-o" style="font-size:20px;"></i>&nbsp;&nbsp;{{schoolImageName}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="next($event, school.stage + 1)">NEXT</button>
+              <button mat-raised-button type="button" class="btn btn-white pull-right" (click)="abort($event)" style="margin-right:10px;">ABORT</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+
+        <!-- STAGE 4 -->
+        <div class="card" *ngIf="school.stage == 3">
+          <div class="card-header card-header-rose">
+            <h4 class="card-title">Teacher Information</h4>
+            <p class="card-category">Upload the teachers data for {{school.name}}</p>
+          </div>
+          <div class="card-body">
+            <div>You can download the <a href="https://s3.us-east-2.amazonaws.com/mgkslt-prod-public/schoolCreation/Teachers.xlsx.csv" style="color:#007dff" download>sample file</a> for reference.</div>
+            <form>
+              <div class="row">
+                <div class="col col-lg-12">
+                  <div [ngClass]="{'drop-zone': !isActive && !isPreviewActive, 'drop-zone-highlighted': isActive && !isPreviewActive, 'text-center': true , 'drop-zone-unmarked': isPreviewActive}" (dragenter)="dragStart($event)" (dragover)="dragOver($event)" (dragleave)="dragEnd($event)" (drop)="onDrop($event)" style="height: 250px">
+                    <div [ngClass]="{'schoolImagePreviewOff': !isPreviewActive, 'drop-zone-crosslabel': isPreviewActive}">
+                      <span style="cursor:pointer" (click)="clearPreview()">CLEAR</span>
+                    </div>
+                    <span [ngClass]="{'schoolImagePreviewOff': isPreviewActive, 'drop-zone-label': !isPreviewActive }" style="margin-top:80px">
+                      Drag & Drop Teacher Data CSV file here<br>OR<br>
+                      <div mat-raised-button class="btn btn-rose text-center" style="font-weight: normal">
+                        Upload File<input type="file" class="drop-zone-input" (change)="changeListener($event)"/>
+                      </div>
+                    </span>
+                    <div [ngClass]="{'schoolFilePreview': isPreviewActive, 'schoolImagePreviewOff': !isPreviewActive}">
+                      <span class="drop-zone-label" style="margin-top:130px;color:#e91e63"><i class="fa fa-file-excel-o" style="font-size:20px;"></i>&nbsp;&nbsp;{{schoolImageName}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="next($event, school.stage + 1)">NEXT</button>
+              <button mat-raised-button type="button" class="btn btn-white pull-right" (click)="abort($event)" style="margin-right:10px;">ABORT</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+
+        <!-- STAGE 5 -->
+        <div class="card" *ngIf="school.stage == 4">
+          <div class="card-header card-header-rose">
+            <h4 class="card-title">Subject Information</h4>
+            <p class="card-category">Upload the subject data for {{school.name}}</p>
+          </div>
+          <div class="card-body">
+            <div>You can download the <a href="https://s3.us-east-2.amazonaws.com/mgkslt-prod-public/schoolCreation/Teachers.xlsx+-+Sheet2.csv" style="color:#007dff" download>sample file</a> for reference.</div>
+            <br>
+            <form>
+              <div class="row">
+                <div class="col col-lg-12">
+                  <div [ngClass]="{'drop-zone': !isActive && !isPreviewActive, 'drop-zone-highlighted': isActive && !isPreviewActive, 'text-center': true , 'drop-zone-unmarked': isPreviewActive}" (dragenter)="dragStart($event)" (dragover)="dragOver($event)" (dragleave)="dragEnd($event)" (drop)="onDrop($event)" style="height: 250px">
+                    <div [ngClass]="{'schoolImagePreviewOff': !isPreviewActive, 'drop-zone-crosslabel': isPreviewActive}">
+                      <span style="cursor:pointer" (click)="clearPreview()">CLEAR</span>
+                    </div>
+                    <span [ngClass]="{'schoolImagePreviewOff': isPreviewActive, 'drop-zone-label': !isPreviewActive }" style="margin-top:80px">
+                      Drag & Drop Subject Data CSV file here<br>OR<br>
+                      <div mat-raised-button class="btn btn-rose text-center" style="font-weight: normal">
+                        Upload File<input type="file" class="drop-zone-input" (change)="changeListener($event)"/>
+                      </div>
+                    </span>
+                    <div [ngClass]="{'schoolFilePreview': isPreviewActive, 'schoolImagePreviewOff': !isPreviewActive}">
+                      <span class="drop-zone-label" style="margin-top:130px;color:#e91e63"><i class="fa fa-file-excel-o" style="font-size:20px;"></i>&nbsp;&nbsp;{{schoolImageName}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="next($event, school.stage + 1)">NEXT</button>
+              <button mat-raised-button type="button" class="btn btn-white pull-right" (click)="abort($event)" style="margin-right:10px;">ABORT</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+
 
       </div>
-      <br>
-      <div class="row">
-        <div class="col col-lg-1"></div>
-        <div class="col col-lg-10">
-
-          <!-- STAGE 1 -->
-          <div class="card" *ngIf="school.stage == 0">
-                  <div class="card-header card-header-rose">
-                      <h4 class="card-title">Basic Information</h4>
-                      <p class="card-category">Tell us about your school</p>
-                  </div>
-                  <div class="card-body">
-                      <form>
-                          <div class="row">
-                            <div class="col col-lg-6">
-                              <div [ngClass]="{'drop-zone': !isActive && !isPreviewActive, 'drop-zone-highlighted': isActive && !isPreviewActive, 'text-center': true , 'drop-zone-unmarked': isPreviewActive}" (dragenter)="dragStart($event)" (dragover)="dragOver($event)" (dragleave)="dragEnd($event)" (drop)="onDrop($event)">
-                                <div [ngClass]="{'schoolImagePreviewOff': !isPreviewActive, 'drop-zone-crosslabel': isPreviewActive}">
-                                  <span style="cursor:pointer" (click)="clearPreview()">CLEAR</span>
-                                </div>
-                                <span [ngClass]="{'schoolImagePreviewOff': isPreviewActive, 'drop-zone-label': !isPreviewActive }">
-                                  Drag & Drop you School's Display Picture<br>OR<br>
-                                  <div mat-raised-button class="btn btn-rose text-center" style="font-weight: normal">
-                                    Upload Image<input type="file" class="drop-zone-input" (change)="changeListener($event)"/>
-                                  </div>
-                                </span>
-                                <img [ngClass]="{'schoolImagePreview': isPreviewActive, 'schoolImagePreviewOff': !isPreviewActive}" [src]="schoolImagePreview">
-                              </div>
-                            </div>
-                            <div class="col col-lg-6">
-                              <mat-form-field class="example-full-width">
-                                <input [(ngModel)]="school.name" name="name" matInput placeholder="School Name" type="text" required>
-                              </mat-form-field>
-                              <mat-form-field class="example-full-width" (click)="openBoardDialog()">
-                                <input disabled="true" [value]="school.board ? school.board.name : ''" name="board" matInput placeholder="Board" type="text">
-                              </mat-form-field>
-                              <mat-form-field class="example-full-width">
-                                <textarea [(ngModel)]="school.address" name="address" matInput placeholder="Address" required></textarea>
-                              </mat-form-field>
-                              <mat-form-field class="example-full-width">
-                                  <input [(ngModel)]="school.city" name="city" matInput placeholder="City" type="text" required>
-                                </mat-form-field>
-                                <mat-form-field class="example-full-width" (click)="openStateDialog()">
-                                  <input disabled="true" [value]="school.state ? school.state.name : ''" name="state" matInput placeholder="State" type="text">
-                                </mat-form-field>
-                                <mat-form-field class="example-full-width">
-                                  <input [(ngModel)]="school.pincode " matInput  name="pincode" placeholder="Pincode" type="text" required>
-                                </mat-form-field>
-                            </div>
-                          </div>
-                          <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="next($event, school.stage + 1)">NEXT</button>
-                          <button mat-raised-button type="button" class="btn btn-white pull-right" (click)="abort($event)" style="margin-right:10px;">ABORT</button>
-                          <div class="clearfix"></div>
-                      </form>
-                  </div>
-          </div>
-
-          <!-- STAGE 2 -->
-          <div class="card" *ngIf="school.stage == 1">
-                  <div class="card-header card-header-rose">
-                      <h4 class="card-title">Class Information</h4>
-                      <p class="card-category">How many classes does {{school.name}} have?</p>
-                  </div>
-                  <div class="card-body">
-                      <form>
-                        <div *ngFor="let cs of classStructure">
-                          <h3 class="card-title">{{cs.levelName}}</h3>
-                            <div class="table-responsive">
-                              <table class="table">
-                                <thead class="text-rose">
-                                  <th>
-                                      Select
-                                  </th>
-                                  <th>
-                                      Standard
-                                  </th>
-                                  <th>
-                                      Sections
-                                  </th>
-                                </thead>
-                                <tbody>
-                                  <tr *ngFor="let st of cs.structure">
-                                      <td>
-                                          <mat-checkbox [checked]="st.selected" [(ngModel)]="st.selected" name="{{st.standard}}-selected"></mat-checkbox>
-                                      </td>
-                                      <td>
-                                          {{st.standard}}
-                                      </td>
-                                      <td>
-                                          <mat-select placeholder="Number of sections" [(ngModel)]="st.sectionCount" name="{{st.standard}}-sectioncount">
-                                            <mat-option *ngFor="let sectionCount of sectionCountArray" [value]="sectionCount">
-                                              {{ sectionCount }}
-                                            </mat-option>
-                                          </mat-select>
-                                      </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                          <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="next($event, school.stage + 1)">NEXT</button>
-                          <button mat-raised-button type="button" class="btn btn-white pull-right" (click)="abort($event)" style="margin-right:10px;">ABORT</button>
-                          <div class="clearfix"></div>
-                      </form>
-                  </div>
-          </div>
-
-          <!-- STAGE 3 -->
-          <div class="card" *ngIf="school.stage == 2">
-            <div class="card-header card-header-rose">
-                <h4 class="card-title">Student Information</h4>
-                <p class="card-category">Upload the students data for {{school.name}}</p>
-            </div>
-            <div class="card-body">
-                <div>You can download the <a href="https://s3.us-east-2.amazonaws.com/mgkslt-prod-public/schoolCreation/Students.xlsx.csv" style="color:#007dff" download>sample file</a> for reference.</div>
-                <br>
-                <form>
-                    <div class="row">
-                      <div class="col col-lg-12">
-                        <div [ngClass]="{'drop-zone': !isActive && !isPreviewActive, 'drop-zone-highlighted': isActive && !isPreviewActive, 'text-center': true , 'drop-zone-unmarked': isPreviewActive}" (dragenter)="dragStart($event)" (dragover)="dragOver($event)" (dragleave)="dragEnd($event)" (drop)="onDrop($event)" style="height: 250px">
-                          <div [ngClass]="{'schoolImagePreviewOff': !isPreviewActive, 'drop-zone-crosslabel': isPreviewActive}">
-                            <span style="cursor:pointer" (click)="clearPreview()">CLEAR</span>
-                          </div>
-                          <span [ngClass]="{'schoolImagePreviewOff': isPreviewActive, 'drop-zone-label': !isPreviewActive }" style="margin-top:80px">
-                            Drag & Drop Student Data CSV file here<br>OR<br>
-                            <div mat-raised-button class="btn btn-rose text-center" style="font-weight: normal">
-                              Upload File<input type="file" class="drop-zone-input" (change)="changeListener($event)"/>
-                            </div>
-                          </span>
-                          <div [ngClass]="{'schoolFilePreview': isPreviewActive, 'schoolImagePreviewOff': !isPreviewActive}">
-                            <span class="drop-zone-label" style="margin-top:130px;color:#e91e63"><i class="fa fa-file-excel-o" style="font-size:20px;"></i>&nbsp;&nbsp;{{schoolImageName}}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <br>
-                    <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="next($event, school.stage + 1)">NEXT</button>
-                    <button mat-raised-button type="button" class="btn btn-white pull-right" (click)="abort($event)" style="margin-right:10px;">ABORT</button>
-                    <div class="clearfix"></div>
-                </form>
-            </div>
-          </div>
-
-          <!-- STAGE 4 -->
-          <div class="card" *ngIf="school.stage == 3">
-            <div class="card-header card-header-rose">
-                <h4 class="card-title">Teacher Information</h4>
-                <p class="card-category">Upload the teachers data for {{school.name}}</p>
-            </div>
-            <div class="card-body">
-                <div>You can download the <a href="https://s3.us-east-2.amazonaws.com/mgkslt-prod-public/schoolCreation/Teachers.xlsx.csv" style="color:#007dff" download>sample file</a> for reference.</div>
-                <form>
-                    <div class="row">
-                      <div class="col col-lg-12">
-                        <div [ngClass]="{'drop-zone': !isActive && !isPreviewActive, 'drop-zone-highlighted': isActive && !isPreviewActive, 'text-center': true , 'drop-zone-unmarked': isPreviewActive}" (dragenter)="dragStart($event)" (dragover)="dragOver($event)" (dragleave)="dragEnd($event)" (drop)="onDrop($event)" style="height: 250px">
-                          <div [ngClass]="{'schoolImagePreviewOff': !isPreviewActive, 'drop-zone-crosslabel': isPreviewActive}">
-                            <span style="cursor:pointer" (click)="clearPreview()">CLEAR</span>
-                          </div>
-                          <span [ngClass]="{'schoolImagePreviewOff': isPreviewActive, 'drop-zone-label': !isPreviewActive }" style="margin-top:80px">
-                            Drag & Drop Teacher Data CSV file here<br>OR<br>
-                            <div mat-raised-button class="btn btn-rose text-center" style="font-weight: normal">
-                              Upload File<input type="file" class="drop-zone-input" (change)="changeListener($event)"/>
-                            </div>
-                          </span>
-                          <div [ngClass]="{'schoolFilePreview': isPreviewActive, 'schoolImagePreviewOff': !isPreviewActive}">
-                            <span class="drop-zone-label" style="margin-top:130px;color:#e91e63"><i class="fa fa-file-excel-o" style="font-size:20px;"></i>&nbsp;&nbsp;{{schoolImageName}}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <br>
-                    <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="next($event, school.stage + 1)">NEXT</button>
-                    <button mat-raised-button type="button" class="btn btn-white pull-right" (click)="abort($event)" style="margin-right:10px;">ABORT</button>
-                    <div class="clearfix"></div>
-                </form>
-            </div>
-          </div>
-
-          <!-- STAGE 5 -->
-          <div class="card" *ngIf="school.stage == 4">
-            <div class="card-header card-header-rose">
-                <h4 class="card-title">Subject Information</h4>
-                <p class="card-category">Upload the subject data for {{school.name}}</p>
-            </div>
-            <div class="card-body">
-                <div>You can download the <a href="https://s3.us-east-2.amazonaws.com/mgkslt-prod-public/schoolCreation/Teachers.xlsx+-+Sheet2.csv" style="color:#007dff" download>sample file</a> for reference.</div>
-                <br>
-                <form>
-                    <div class="row">
-                      <div class="col col-lg-12">
-                        <div [ngClass]="{'drop-zone': !isActive && !isPreviewActive, 'drop-zone-highlighted': isActive && !isPreviewActive, 'text-center': true , 'drop-zone-unmarked': isPreviewActive}" (dragenter)="dragStart($event)" (dragover)="dragOver($event)" (dragleave)="dragEnd($event)" (drop)="onDrop($event)" style="height: 250px">
-                          <div [ngClass]="{'schoolImagePreviewOff': !isPreviewActive, 'drop-zone-crosslabel': isPreviewActive}">
-                            <span style="cursor:pointer" (click)="clearPreview()">CLEAR</span>
-                          </div>
-                          <span [ngClass]="{'schoolImagePreviewOff': isPreviewActive, 'drop-zone-label': !isPreviewActive }" style="margin-top:80px">
-                            Drag & Drop Subject Data CSV file here<br>OR<br>
-                            <div mat-raised-button class="btn btn-rose text-center" style="font-weight: normal">
-                              Upload File<input type="file" class="drop-zone-input" (change)="changeListener($event)"/>
-                            </div>
-                          </span>
-                          <div [ngClass]="{'schoolFilePreview': isPreviewActive, 'schoolImagePreviewOff': !isPreviewActive}">
-                            <span class="drop-zone-label" style="margin-top:130px;color:#e91e63"><i class="fa fa-file-excel-o" style="font-size:20px;"></i>&nbsp;&nbsp;{{schoolImageName}}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <br>
-                    <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="next($event, school.stage + 1)">NEXT</button>
-                    <button mat-raised-button type="button" class="btn btn-white pull-right" (click)="abort($event)" style="margin-right:10px;">ABORT</button>
-                    <div class="clearfix"></div>
-                </form>
-            </div>
-          </div>
-
-
-        </div>
-        <div class="col col-lg-1"></div>
-      </div>
+      <div class="col col-lg-1"></div>
+    </div>
 
   </div>
 </div>

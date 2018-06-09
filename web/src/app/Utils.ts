@@ -37,4 +37,25 @@ export class Utils {
   			return "on " + localDateTime
   		}
   	}
+
+    public static validatePhone(phone: string): Boolean {
+      if(!phone || phone.trim().match(/^([0|\+[0-9]{1,5})?([7-9][0-9]{9})$/) == null) {
+        return false;
+      }
+      return true;
+    }
+
+    public static validatePassword(password: string): Boolean {
+      if(!password || password.length < 6) {
+        return false;
+      }
+      return true;
+    }
+
+    public static validateEmail(email: string): Boolean {
+      if(!email || email.trim().match(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/) == null) {
+        return false
+      }
+      return true
+    }
 }

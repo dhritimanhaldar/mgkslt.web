@@ -1,38 +1,125 @@
-<div class="main-content">
+<div class="main-content" style="margin: 0;height: 100vh">
   <div class="container-fluid">
+
+    <div style="background-color: #e91e63; height: 30vh;width: 100vw;top:0;left:0;position: absolute;box-shadow: 0px 0px 19px 0px rgba(0,0,0,0.75);">
+
+    </div>
 
     <div class="row">
       <div class="col col-md-4"></div>
       <div class="col col-md-4 text-center">
         <div class="card login-card">
-            <div class="card-body">
-              <br>
-              <img src="../assets/img/PinkLogo.png" width="100px" style="border-radius: 50%;">
-              <br><br>
-              <h2 class="card-title" style="color:#fff">magiKslate</h2>
-              <form>
-                <div class="row">
-                  <div class="col col-lg-2"></div>
-                  <div class="col col-lg-8">
-                    <mat-form-field class="example-full-width">
-                      <input [(ngModel)]="user.phone" name="phone" style="color: #fff;caret-color: #fff;" matInput placeholder="Phone Number" type="text" required>
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                      <input [(ngModel)]="user.password" name="password" style="color: #fff;caret-color: #fff;" matInput placeholder="Password" type="password" required>
-                    </mat-form-field>
-                  </div>
-                  <div class="col col-lg-2"></div>
+          <div class="card-body">
+            <br>
+            <img src="../assets/img/PinkLogo.png" width="100px" style="border-radius: 50%;border:1px solid #ccc;box-shadow: 0px 0px 8px 0px rgba(112,112,112,1);">
+            <br>
+            <h2 class="card-title">magiKslate</h2>
+            <form *ngIf="currentView == 'login'">
+              <div class="row">
+                <div class="col col-lg-2"></div>
+                <div class="col col-lg-8">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="user.phone" name="phone" matInput placeholder="Phone Number" type="phone" required>
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="user.password" name="password" matInput placeholder="Password" type="password" required>
+                  </mat-form-field>
+                  <button mat-raised-button type="button" class="btn btn-rose col-lg-8" style="box-shadow: 0px 0px 8px 0px rgba(152,152,152,1);" (click)="login($event)">SIGN IN</button>
+                  <br>
+                  Don't have an account? <span style="color: #e91e63;text-decoration: underline;cursor:pointer" (click)="currentView='signup'">Sign up</span>
                 </div>
-                <br>
-                <button mat-raised-button type="button" class="btn btn-white col-lg-8" style="box-shadow: 0px 0px 8px 0px rgba(112,112,112,1);" (click)="login($event)">SIGN IN</button>
-                <br><br>
-                <div class="clearfix"></div>
-              </form>
+                <div class="col col-lg-2"></div>
+              </div>
+              <div class="clearfix"></div>
+            </form>
+            <form *ngIf="currentView == 'signup'">
+              <div class="row">
+                <div class="col col-lg-2"></div>
+                <div class="col col-lg-8">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="user.name" name="name" matInput placeholder="Name" type="text" required>
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="user.email" name="email" matInput placeholder="Email" type="email" required>
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="user.phone" name="phone" matInput placeholder="Phone Number" type="phone" required>
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="user.password" name="password" matInput placeholder="Password" type="password" required>
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="reppassword" name="reppassword" matInput placeholder="Repeat Password" type="password" required>
+                  </mat-form-field>
+                  <button mat-raised-button type="button" class="btn btn-rose col-lg-8" style="box-shadow: 0px 0px 8px 0px rgba(152,152,152,1);" (click)="signup($event)">SIGN UP</button>
+                  <br>
+                  Already have an account? <span style="color: #e91e63;text-decoration: underline;cursor:pointer" (click)="currentView='login'">Sign in</span>
+                </div>
+                <div class="col col-lg-2"></div>
+              </div>
+              <div class="clearfix"></div>
+            </form>
+            <form *ngIf="currentView == 'otp'">
+              <div class="row">
+                <div class="col col-lg-2"></div>
+                <div class="col col-lg-8">
+                  Please enter the OTP sent to your mobile
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="otp" name="otp" matInput placeholder="Enter OTP" type="text" required>
+                  </mat-form-field>
+                  <button mat-raised-button type="button" class="btn btn-rose col-lg-8" style="box-shadow: 0px 0px 8px 0px rgba(152,152,152,1);" (click)="submitOtp($event)">Submit</button>
+                  <!-- <br>
+                  Didn't receive OTP? <span style="color: #e91e63;text-decoration: underline;cursor:pointer" (click)="resendOtp()">Resend OTP</span> -->
+                  <div class="clearfix"></div>
+                  <br>
+                </div>
+                <div class="col col-lg-2"></div>
+              </div>
+            </form>
+            <form *ngIf="currentView == 'forgotpassword'">
+              <div class="row">
+                <div class="col col-lg-2"></div>
+                <div class="col col-lg-8">
+                  Please enter your registered phone number
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="fp_phone" name="fp_phone" matInput placeholder="Phone" type="phone" required>
+                  </mat-form-field>
+                  <button mat-raised-button type="button" class="btn btn-rose col-lg-8" style="box-shadow: 0px 0px 8px 0px rgba(152,152,152,1);" (click)="forgotPassword1($event)">Send OTP</button>
+                  <div class="clearfix"></div>
+                  <br>
+                </div>
+                <div class="col col-lg-2"></div>
+              </div>
+            </form>
+            <form *ngIf="currentView == 'updatePassword'">
+              <div class="row">
+                <div class="col col-lg-2"></div>
+                <div class="col col-lg-8">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="newPassword" name="newPassword" matInput placeholder="Enter New Password" type="password" required>
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="repeatNewPassword" name="repeatNewPassword" matInput placeholder="Repeat New Password" type="password" required>
+                  </mat-form-field>
+                  <button mat-raised-button type="button" class="btn btn-rose col-lg-8" style="box-shadow: 0px 0px 8px 0px rgba(152,152,152,1);" (click)="updatePassword($event)">Change Password</button>
+                  <div class="clearfix"></div>
+                  <br>
+                </div>
+                <div class="col col-lg-2"></div>
+              </div>
+            </form>
+            <br>
+            <div class="row" *ngIf="currentView != 'forgotpassword' && currentView != 'updatePassword' && currentView != 'otp'">
+              <div class="col col-md-6"></div>
+              <div class="col col-md-6">
+                <span style="color: #e91e63;text-decoration: underline;cursor:pointer" class="pull-right" (click)="currentView='forgotpassword'">Forgot Password</span>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col col-md-4"></div>
       </div>
-
+      <div class="col col-md-4"></div>
     </div>
+
   </div>
+</div>

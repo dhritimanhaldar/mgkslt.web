@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Http, Headers, RequestOptions } from "@angular/http";
 import { CookieService } from 'angular2-cookie/core';
+import { User } from '../models/User';
   
 //school object
 export class school {
@@ -49,6 +50,14 @@ export class AppNetworkService {
       return this._cookieService.get(key);
     }
 
+    setCookieWithExpiry(key: string, val: string, duration: number) {//duration in secs
+      var currentDate = new Date()
+      let opts = {
+          expires: new Date(currentDate.getTime() + duration)
+      };
+      this._cookieService.put(key, val, opts);
+    }
+
     setCookie(key: string, val: string) {
       this._cookieService.put(key, val);
     }
@@ -86,12 +95,15 @@ export class AppNetworkService {
   // HTTP REQUESTS WRAPPERS - GET, POST, PATCH
 
   //request wrapper
-  getRequest(url): Promise<any> {
+  getRequest(url, extraHeaders): Promise<any> {
+    url = this.getUrl(url)
+    var headers = this.getHeaders(url, extraHeaders)
+    
     return this.http
       .get(
-        this.getUrl(url),
+        url,
         new RequestOptions({
-          headers: this.getHeaderDetail(undefined, undefined)
+          headers: headers
         })
       )
       .toPromise()
@@ -104,13 +116,22 @@ export class AppNetworkService {
       });
   }
 
-  postRequest(url, object): Promise<any> {
+  postRequest(url, object, extraHeaders): Promise<any> {
+    url = this.getUrl(url)
+    var headers = this.getHeaders(url, extraHeaders)
+    if(extraHeaders) {
+      for(var key in extraHeaders) {
+        if(extraHeaders.hasOwnProperty(key)) {
+          headers[key] = extraHeaders[key]
+        }
+      }
+    }
     return this.http
       .post(
-        this.getUrl(url),
+        url,
         object,
         new RequestOptions({
-          headers: this.getHeaderDetail(undefined, undefined)
+          headers: headers
         })
       )
       .toPromise()
@@ -127,13 +148,22 @@ export class AppNetworkService {
       });
   }
 
-  patchRequest(url, object): Promise<any> {
+  patchRequest(url, object, extraHeaders): Promise<any> {
+    url = this.getUrl(url)
+    var headers = this.getHeaders(url, extraHeaders)
+    if(extraHeaders) {
+      for(var key in extraHeaders) {
+        if(extraHeaders.hasOwnProperty(key)) {
+          headers[key] = extraHeaders[key]
+        }
+      }
+    }
     return this.http
       .patch(
-        this.getUrl(url),
+        url,
         object,
         new RequestOptions({
-          headers: this.getHeaderDetail(undefined, undefined)
+          headers: headers
         })
       )
       .toPromise()
@@ -156,8 +186,6 @@ export class AppNetworkService {
       }
     }
     let headers = new Headers();
-    // headers.append('Content-Type', 'multipart/form-data');
-    // headers.append('Accept', 'application/json');
     headers.append('authorization', this._token);
     headers.append('roleauth', this._roleauth);
     let options = new RequestOptions({ headers: headers });
@@ -166,13 +194,26 @@ export class AppNetworkService {
   }
 
   //get header for all request
-  getHeaderDetail(_contentType, fpauth): any {
-    let _header = {
-      "Content-Type": _contentType || "application/json",
-      fpauthorization: fpauth,
-      authorization: this._token,
-      roleauth: this._roleauth
+  getHeaders(url, extraHeaders): any {
+    var _header = {
+      "Content-Type": "application/json",
+      "Content-Encoding": "gzip",
     };
+
+    if(extraHeaders) {
+      for(var key in extraHeaders) {
+        if(extraHeaders.hasOwnProperty(key)) {
+          _header[key] = extraHeaders[key]
+        }
+      }
+    }
+
+    if(url.indexOf("/secure/app/") > -1) {
+      _header["authorization"] = this._token
+      _header["roleauth"] = this._roleauth
+    } else if(url.indexOf("/secure/") > -1) {
+      _header["authorization"] = this._token
+    }
     return new Headers(_header);
   }
 
@@ -190,13 +231,58 @@ export class AppNetworkService {
     return this.postRequest("user/login", {
       phone: phone,
       password: password
-    })
+    }, null)
+  }
+
+  signup(user: User): Promise<any> {
+    return this.postRequest("user", {
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      password: user.password
+    }, null)
+  }
+
+  forgotPassword1(phone: string): Promise<any> {
+    return this.patchRequest("user/forgotpassword", {
+      phone: phone
+    }, null)
+  }
+
+  forgotPassword2(phone: string, otp: string): Promise<any> {
+    return this.postRequest("user/forgotpassword", {
+      phone: phone,
+      otp: otp
+    }, null)
+  }
+
+  verifyUser(userId: string, otp: string): Promise<any> {
+    return this.postRequest("user/verify",{
+      userId: userId,
+      otp: otp
+    }, null)
+  }
+
+  updatePasswordWithoutLogin(newPassword: string, repeatNewPassword: string, fpauthorization: string): Promise<any> {
+    var fpauthHeader = {
+      "fpauthorization": fpauthorization
+    }
+    return this.patchRequest("user/updatePassword",{
+      newPassword: newPassword,
+      repeatNewPassword: repeatNewPassword
+    }, fpauthHeader)
+  }
+
+  resendOtp(phone: string): Promise<any> {
+    return this.postRequest("user/resendOtp", {
+      phone: phone
+    }, null)
   }
 
   //get all user details
   getUserAsync(): Promise<any> {
     if(this.user == null) {
-      return this.getRequest("secure/user")
+      return this.getRequest("secure/user", null)
       .then(d => {
         let data = d.json();
         this.user = data;
@@ -224,7 +310,7 @@ export class AppNetworkService {
   //get all boards
   getBoardList(): Promise<any> {
     if(this.boardList == null) {
-      return this.getRequest("/board/list")
+      return this.getRequest("/board/list", null)
     } else {
       return new Promise(this.boardList);
     }
@@ -233,7 +319,7 @@ export class AppNetworkService {
   //get all states
   getStateList(): Promise<any> {
     if(this.stateList == null) {
-      return this.getRequest("/state/list")
+      return this.getRequest("/state/list", null)
     } else {
       return new Promise(this.stateList);
     }
@@ -242,7 +328,7 @@ export class AppNetworkService {
   //get all user roles
   getUserRoleAsync(): Promise<any> {
     // if(this.roleList == null){
-      return this.getRequest("secure/user/listRoles")
+      return this.getRequest("secure/user/listRoles", null)
     .then(d => {
         let data = d.json();
         this.roleList = data;
@@ -280,19 +366,19 @@ export class AppNetworkService {
         otherParams
       );
     } else {
-      return this.postRequest("secure/school/", objSchool);
+      return this.postRequest("secure/school/", objSchool, null);
     }
     
   }
 
   // get school details for admin
   getSchoolForAdmin(schoolId): Promise<any> {
-    return this.getRequest("/secure/school/" + schoolId);
+    return this.getRequest("/secure/school/" + schoolId, null);
   }
 
   //save class detail
   saveClassDetail(objClass, schoolId): Promise<any> {
-    return this.postRequest("secure/app/class",  objClass);
+    return this.postRequest("secure/app/class",  objClass, null);
   }
 
   // FILE UPLOADS
@@ -324,7 +410,7 @@ export class AppNetworkService {
   //role auth key
   getRoleAuthKey(type, id, sid): Promise<boolean> {
     return this.getRequest(
-      "secure/user/roleauth/" + type + "/" + id + "?sid=" + sid
+      ("secure/user/roleauth/" + type + "/" + id + "?sid=" + sid), null
     )
       .then(d => {
         this._roleauth = d.headers.get("roleauth");
