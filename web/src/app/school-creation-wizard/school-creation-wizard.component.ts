@@ -1,12 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core';
 import { AppNetworkService } from '../services/app-network.service';
 import { AppNotificationService } from '../services/app-notification.service';
+import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatFormFieldModule, MatInputModule, MatTableModule, MatTableDataSource, MatSelect, MatCheckbox } from '@angular/material';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { Utils } from '../Utils'
 import { Router, ActivatedRoute } from '@angular/router';
 import { School } from '../models/School';
 import { Board } from '../models/Board';
 import { State } from '../models/State';
+import { StudentInputComponent } from '../components/studentInput/studentinput.component';
 import {
   trigger,
   state,
@@ -39,7 +42,10 @@ export class SchoolCreationWizardComponent implements OnInit {
   public classStructure;
   private uploadedFile;
 
-  constructor(private apns: AppNetworkService, private ans: AppNotificationService, public dialog: MatDialog, private rtr: Router, private route: ActivatedRoute) { 
+  constructor(private apns: AppNetworkService, private ans: AppNotificationService,
+   public dialog: MatDialog, private rtr: Router, private route: ActivatedRoute,
+    public studentInputComponent: StudentInputComponent) { 
+
   	this.appNetworkService = apns;
   	this.appNotificationService = ans;
     this.router = rtr;

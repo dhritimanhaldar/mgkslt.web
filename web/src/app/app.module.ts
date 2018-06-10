@@ -11,6 +11,8 @@ import { MatTableModule } from '@angular/material';
 import { MatTableDataSource } from '@angular/material';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { AppRoutingModule } from './app.routing';
@@ -48,6 +50,8 @@ const appInitializerFn = (appNetworkService: AppNetworkService) => {
     ComponentsModule,
     RouterModule,
     AppRoutingModule,
+    MatIconModule,
+    MatButtonToggleModule,
     BrowserModule,
     HttpModule,
     MatDialogModule,
