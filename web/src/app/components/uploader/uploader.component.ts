@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AppNotificationService } from '../../services/app-notification.service';
+import { Utils } from '../../Utils';
 
 @Component({
 	selector: 'app-uploader',
@@ -16,12 +17,7 @@ export class UploaderComponent implements OnInit {
 
 	private appNotificationService: AppNotificationService;
 
-	private supportedFileInfo = {
-		"csv": { "normalizedType" : "file", "type": "csv"},
-		"jpg": { "normalizedType" : "image", "type": "image/jpg"},
-		"jpeg": { "normalizedType" : "image", "type": "image/jpeg"},
-		"png": { "normalizedType" : "image", "type": "image/png"}
-	}
+	private supportedFileInfo = Utils.getSupportedFileInfo()
 
 	constructor(private ans: AppNotificationService) { 
   		this.appNotificationService = ans;
@@ -69,16 +65,8 @@ export class UploaderComponent implements OnInit {
 		}
 	}
 
-	isValidImageFile(fileType) {
-		var ftype = fileType.split("/")[1]
-		if(ftype) {
-			return this.supportedFileInfo[ftype]["normalizedType"] == "image"
-		}
-		return false;
-	}
-
 	showImagePreview(file) {
-		if(!this.isValidImageFile(file.type)) {
+		if(!Utils.isValidImageFile(file.type)) {
 			this.appNotificationService.notify("Not a valid image file", "danger")
 			return
 		}
@@ -96,7 +84,7 @@ export class UploaderComponent implements OnInit {
 	}
 
 	showFileInformation(file) {
-		if(this.isValidImageFile(file.type)) {
+		if(Utils.isValidImageFile(file.type)) {
 			this.appNotificationService.notify("Image file not expected", "danger")
 			return
 		}

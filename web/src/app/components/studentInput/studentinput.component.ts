@@ -1,7 +1,8 @@
-import { Component, OnInit, Directive } from '@angular/core';
+import { Component, OnInit, Directive, Input, Output } from '@angular/core';
 import { UploaderComponent } from '../uploader/uploader.component'
 import { StudentInputFormComponent } from '../studentinputform/studentinputform.component'
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatFormFieldModule, MatInputModule, MatTableModule, MatTableDataSource, MatSelect, MatCheckbox } from '@angular/material';
+import { School } from '../../models/School';
 
 @Component({
 	selector: 'app-student-input',
@@ -9,6 +10,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatFormFieldModule, MatInputM
 	styleUrls: ['./studentinput.component.css']
 })
 export class StudentInputComponent implements OnInit {
+
+	@Input() school:School;
 
 	public studentInputFormOpen: Boolean = false
 	public searchDisabled: Boolean = true
@@ -26,7 +29,9 @@ export class StudentInputComponent implements OnInit {
 	showStudentForm(event) {
 		let dialogRef = this.dialog.open(StudentInputFormComponent, {
 			width: "75vw",
-			disableClose:true
+			height: "75vh",
+			disableClose:true,
+			data: { student: null, school: this.school }
 		});
 
 		dialogRef.afterClosed().subscribe(result => {

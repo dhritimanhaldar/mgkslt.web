@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col col-md-3 col-sm-3 col-lg-3">
-        <app-profile-pic src="https://www.thefamouspeople.com/profiles/images/gerard-butler-3.jpg" name="Gerard Butler"></app-profile-pic>     
+        <app-profile-pic [name]="getFirstName(student.name)" [editable]="true"></app-profile-pic>     
     </div>
     <div class="col col-md-9 col-sm-9 col-lg-9">
 
@@ -17,48 +17,30 @@
                         <div class="row">
                             <div class="col-md-9">
                                 <mat-form-field class="example-full-width">
-                                    <input matInput placeholder="Student Name">
+                                    <input matInput placeholder="Student Name" [(ngModel)]="student.name">
                                 </mat-form-field>
                             </div>
                             <div class="col-md-3">
                                 <mat-form-field class="example-full-width">
-                                    <input matInput placeholder="Admission Code">
+                                    <input matInput placeholder="Admission Code" [(ngModel)]="student.admissionCode">
                                 </mat-form-field>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <mat-form-field class="example-full-width">
-                                    <mat-select placeholder="Standard">
-                                        <mat-option>
-                                            FIRST
-                                        </mat-option>
-                                        <mat-option>
-                                            SECOND
-                                        </mat-option>
-                                        <mat-option>
-                                            THIRD
-                                        </mat-option>
-                                        <mat-option>
-                                            FOURTH
+                                    <mat-select placeholder="Standard" [(ngModel)]="student.clazz.standard">
+                                        <mat-option *ngFor="let class of school.classList" [value]="class.standard">
+                                            {{class.standard}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
                             <div class="col-md-6">
                                 <mat-form-field class="example-full-width">
-                                    <mat-select placeholder="Section">
-                                        <mat-option>
-                                            A
-                                        </mat-option>
-                                        <mat-option>
-                                            B
-                                        </mat-option>
-                                        <mat-option>
-                                            C
-                                        </mat-option>
-                                        <mat-option>
-                                            D
+                                    <mat-select placeholder="Section" [(ngModel)]="student.clazz.section">
+                                        <mat-option *ngFor="let obj of classSectionObject[student.clazz.standard]" [value]="obj.section">
+                                            {{obj.section}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -67,22 +49,16 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <mat-form-field class="example-full-width">
-                                    <mat-select placeholder="Gender">
-                                        <mat-option>
-                                            Male
-                                        </mat-option>
-                                        <mat-option>
-                                            Female
-                                        </mat-option>
-                                        <mat-option>
-                                            Other
+                                    <mat-select placeholder="Gender" [(ngModel)]="student.gender" name="gender">
+                                        <mat-option *ngFor="let gender of genders" [value]="gender.value">
+                                            {{gender.text}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
                             <div class="col-md-4">
                                 <mat-form-field class="example-full-width">
-                                    <input matInput [matDatepicker]="picker" placeholder="Date of Birth">
+                                    <input matInput [matDatepicker]="picker" placeholder="Date of Birth" [(ngModel)]="student.dob">
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
                                 </mat-form-field>
@@ -101,20 +77,24 @@
                         Parent Information
                     </h3>
                 </div>
-                <div class="row">
+                <div class="row" *ngFor="let parent of student.parentList; let i = index" [attr.data-index]="i">
                     <div class="col col-md-12 col-lg-12 col-sm-12">
+                        <h4>Parent {{i + 1}}</h4>
                         <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Parent Name">
+                            <input matInput placeholder="Parent Name" [(ngModel)]="parent.user.name">
                         </mat-form-field>
                         <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Email Id" type="email">
+                            <input matInput placeholder="Email Id" type="email" [(ngModel)]="parent.user.email">
                         </mat-form-field>
                         <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Phone" type="phone">
+                            <input matInput placeholder="Phone" type="phone" [(ngModel)]="parent.user.phone">
                         </mat-form-field>
+                        <button *ngIf="i > 0" mat-raised-button type="button" class="btn btn-white pull-right" (click)="removeParent(i)">
+                            REMOVE PARENT
+                        </button>
                     </div>
                 </div>
-                <button mat-raised-button type="button" class="btn btn-rose pull-left" (click)="addTeacherForm($event)">
+                <button mat-raised-button type="button" class="btn btn-rose pull-left" (click)="addParent($event)">
                     ADD PARENT
                 </button>
             </div>

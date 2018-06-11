@@ -1,5 +1,6 @@
 import { Board } from './Board';
 import { State } from './State';
+import { Class } from './Class';
 
 export class School {
   	public id: Number;
@@ -10,4 +11,5 @@ export class School {
     public board: Board;
     public state: State;
     public stage: Number = 0;
+    public classList: [Class];
 }

@@ -430,6 +430,7 @@ export class SchoolCreationWizardComponent implements OnInit {
         this.school.name = data.name;
         this.school.stage = data.stage;
         this.adminId = data.currentUserAdminId;
+        this.school.classList = data.classList
 
         if(!this.appNetworkService.getCookie("roleauth")) {
           this.appNetworkService.getRoleAuthKey("admin", this.adminId, this.school.id)

@@ -7,4 +7,7 @@ export class Student {
 	profilePic: string;
 	clazz: Class
 	parentList:[Parent]
+	gender: string
+	dob: Date
+	admissionCode: string
 }

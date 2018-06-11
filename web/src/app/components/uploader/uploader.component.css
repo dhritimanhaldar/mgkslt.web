@@ -44,6 +44,9 @@
 	text-align: center;
 	border: 5px solid #fff;
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.86);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 .filePreview {
