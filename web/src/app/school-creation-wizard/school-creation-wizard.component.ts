@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { School } from '../models/School';
 import { Board } from '../models/Board';
 import { State } from '../models/State';
-import { StudentInputComponent } from '../components/studentInput/studentinput.component';
+import { StudentInputComponent } from '../components/studentinput/studentinput.component';
 import {
   trigger,
   state,

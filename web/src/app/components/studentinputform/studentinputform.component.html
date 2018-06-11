@@ -1,0 +1,130 @@
+<div class="row">
+	<div class="col col-md-3 col-sm-3 col-lg-3">
+        <app-profile-pic src="https://www.thefamouspeople.com/profiles/images/gerard-butler-3.jpg" name="Gerard Butler"></app-profile-pic>     
+    </div>
+    <div class="col col-md-9 col-sm-9 col-lg-9">
+
+        <!-- STUDENT SECTION -->
+        <div class="row">
+            <div class="col col-md-12 col-lg-12 col-sm-12">
+                <div >
+                    <h3>
+                        Student Information
+                    </h3>
+                </div>
+                <div class="row">
+                    <div class="col col-md-12 col-lg-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Student Name">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Admission Code">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <mat-form-field class="example-full-width">
+                                    <mat-select placeholder="Standard">
+                                        <mat-option>
+                                            FIRST
+                                        </mat-option>
+                                        <mat-option>
+                                            SECOND
+                                        </mat-option>
+                                        <mat-option>
+                                            THIRD
+                                        </mat-option>
+                                        <mat-option>
+                                            FOURTH
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6">
+                                <mat-form-field class="example-full-width">
+                                    <mat-select placeholder="Section">
+                                        <mat-option>
+                                            A
+                                        </mat-option>
+                                        <mat-option>
+                                            B
+                                        </mat-option>
+                                        <mat-option>
+                                            C
+                                        </mat-option>
+                                        <mat-option>
+                                            D
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <mat-form-field class="example-full-width">
+                                    <mat-select placeholder="Gender">
+                                        <mat-option>
+                                            Male
+                                        </mat-option>
+                                        <mat-option>
+                                            Female
+                                        </mat-option>
+                                        <mat-option>
+                                            Other
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput [matDatepicker]="picker" placeholder="Date of Birth">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PARENT SECTION -->
+        <div class="row">
+            <div class="col col-md-12 col-lg-12 col-sm-12">
+                <div >
+                    <h3>
+                        Parent Information
+                    </h3>
+                </div>
+                <div class="row">
+                    <div class="col col-md-12 col-lg-12 col-sm-12">
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Parent Name">
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Email Id" type="email">
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Phone" type="phone">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <button mat-raised-button type="button" class="btn btn-rose pull-left" (click)="addTeacherForm($event)">
+                    ADD PARENT
+                </button>
+            </div>
+        </div>
+
+        <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="done($event)">
+            DONE
+        </button>
+        <button mat-raised-button type="button" class="btn btn-white pull-right" style="margin-right:20px" (click)="cancel($event)">
+            CANCEL
+        </button>
+    </div>
+</div>

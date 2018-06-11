@@ -12,7 +12,7 @@ import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { RoleComponent } from '../../role/role.component';
 import { SchoolCreationWizardComponent } from '../../school-creation-wizard/school-creation-wizard.component';
 import { UserProfileComponent } from '../../user-profile/user-profile.component';
-import { StudentInputComponent } from '../../components/studentInput/studentinput.component';
+import { StudentInputComponent } from '../../components/studentinput/studentinput.component';
 import { UploaderComponent } from '../../components/uploader/uploader.component';
 
 import {
@@ -42,10 +42,10 @@ import {
     SchoolCreationWizardComponent,
     UserProfileComponent,
     StudentInputComponent,
-    UploaderComponent
+    UploaderComponent,
   ],
   providers: [
-    StudentInputComponent
+    StudentInputComponent,
   ]
 })
 

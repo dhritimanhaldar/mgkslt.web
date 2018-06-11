@@ -373,7 +373,7 @@ export class AppNetworkService {
 
   // get school details for admin
   getSchoolForAdmin(schoolId): Promise<any> {
-    return this.getRequest("/secure/school/" + schoolId, null);
+    return this.getRequest("secure/school/" + schoolId, null);
   }
 
   //save class detail

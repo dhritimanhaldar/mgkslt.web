@@ -13,6 +13,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { MatRadioModule } from '@angular/material/radio';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { AppRoutingModule } from './app.routing';
@@ -27,6 +29,8 @@ import { RoleComponent } from './role/role.component';
 import { SchoolCreationWizardComponent } from './school-creation-wizard/school-creation-wizard.component';
 import { BoardDialog } from './school-creation-wizard/school-creation-wizard.component';
 import { StateDialog } from './school-creation-wizard/school-creation-wizard.component';
+import { StudentInputFormComponent } from './components/studentinputform/studentinputform.component';
+import { ProfilePicComponent } from './components/profilepic/profilepic.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import {
   AgmCoreModule
@@ -54,9 +58,12 @@ const appInitializerFn = (appNetworkService: AppNetworkService) => {
     MatButtonToggleModule,
     BrowserModule,
     HttpModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatRadioModule,
     MatTableModule,
     MatCheckboxModule,
     MatSelectModule,
@@ -64,12 +71,14 @@ const appInitializerFn = (appNetworkService: AppNetworkService) => {
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
     })
   ],
-  entryComponents: [  BoardDialog, StateDialog  ],
+  entryComponents: [  BoardDialog, StateDialog, StudentInputFormComponent  ],
   declarations: [
     AppComponent,
     AdminLayoutComponent,
     BoardDialog,
     StateDialog,
+    StudentInputFormComponent,
+    ProfilePicComponent
   ],
   providers: [
     CookieService,

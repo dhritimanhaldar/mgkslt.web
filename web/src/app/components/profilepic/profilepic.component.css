@@ -1,0 +1,21 @@
+.profilepic-container {
+	width:100%;
+	max-width:240px;
+	height:250px;
+	border: 3px solid #fff;
+	box-shadow: 0px 0px 10px -1px rgba(0,0,0,0.75);
+	padding-bottom:30px;
+}
+
+.profilepicdiv {
+	width: 100%;
+	height: calc(100% - 10px);
+	background-size: cover;
+}
+
+.name {
+	text-align: center;
+	margin-top: 10px;
+	width: 100%;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+}
