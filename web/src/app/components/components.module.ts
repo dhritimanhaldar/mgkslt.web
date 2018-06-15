@@ -6,8 +6,6 @@ import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 
-// import { AppNetworkService } from '../services/app-network.service';
-
 @NgModule({
   imports: [
     CommonModule,
@@ -16,14 +14,12 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   declarations: [
     FooterComponent,
     NavbarComponent,
-    SidebarComponent,
-    // AppNetworkService
+    SidebarComponent
   ],
   exports: [
     FooterComponent,
     NavbarComponent,
-    SidebarComponent,
-    // AppNetworkService
+    SidebarComponent
   ]
 })
 export class ComponentsModule { }

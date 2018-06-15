@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { AppNetworkService } from '../../services/app-network.service';
 
 @Component({
@@ -14,13 +14,26 @@ export class NavbarComponent implements OnInit {
     location: Location;
     mobile_menu_visible: any = 0;
     private toggleButton: any;
-    private sidebarVisible: boolean;
+    private sidebarVisible: boolean = true;
     private appNetworkService: AppNetworkService;
+    public adjustableWidth = null
 
     constructor(location: Location,  private element: ElementRef, private router: Router, private apns: AppNetworkService) {
       this.location = location;
-      this.sidebarVisible = false;
+      this.sidebarVisible = true;
       this.appNetworkService = apns;
+      router.events.subscribe((val) => {
+          if(val instanceof NavigationEnd && ((val.url.indexOf("/dashboard/admin/") > -1) || (val.url.indexOf("/user-profile") > -1))) {
+            this.adjustableWidth = {
+              'width': 'calc(100% - 261px) !important',
+              'margin-left': '261px !important'
+            }
+          } else {
+             this.adjustableWidth = {
+               'width': '100%'
+             };
+          }
+      });
     }
 
     ngOnInit(){

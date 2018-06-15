@@ -11,6 +11,13 @@ import { MatTableModule } from '@angular/material';
 import { MatTableDataSource } from '@angular/material';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { Ng2CarouselamosModule } from 'ng2-carouselamos';
+import {CarouselModule} from "angular2-carousel";
+import { SwiperModule } from 'angular2-useful-swiper';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { MatRadioModule } from '@angular/material/radio';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { AppRoutingModule } from './app.routing';
@@ -19,12 +26,11 @@ import { AppNetworkService } from './services/app-network.service';
 import { AppNotificationService } from './services/app-notification.service';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { RoleComponent } from './role/role.component';
-import { SchoolCreationWizardComponent } from './school-creation-wizard/school-creation-wizard.component';
 import { BoardDialog } from './school-creation-wizard/school-creation-wizard.component';
 import { StateDialog } from './school-creation-wizard/school-creation-wizard.component';
-import { UserProfileComponent } from './user-profile/user-profile.component';
+import { StudentInputFormComponent } from './components/studentinputform/studentinputform.component';
+import { ProfilePicComponent } from './components/profilepic/profilepic.component';
+
 import {
   AgmCoreModule
 } from '@agm/core';
@@ -47,24 +53,34 @@ const appInitializerFn = (appNetworkService: AppNetworkService) => {
     ComponentsModule,
     RouterModule,
     AppRoutingModule,
+    MatIconModule,
+    MatButtonToggleModule,
     BrowserModule,
     HttpModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatRadioModule,
     MatTableModule,
+    Ng2CarouselamosModule,
+    CarouselModule,
+    SwiperModule,
     MatCheckboxModule,
     MatSelectModule,
     AgmCoreModule.forRoot({
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
     })
   ],
-  entryComponents: [  BoardDialog, StateDialog  ],
+  entryComponents: [  BoardDialog, StateDialog, StudentInputFormComponent  ],
   declarations: [
     AppComponent,
     AdminLayoutComponent,
     BoardDialog,
     StateDialog,
+    StudentInputFormComponent,
+    ProfilePicComponent
   ],
   providers: [
     CookieService,

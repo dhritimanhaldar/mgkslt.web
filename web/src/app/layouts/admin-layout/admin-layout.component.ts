@@ -18,12 +18,20 @@ export class AdminLayoutComponent implements OnInit {
   private yScrollStack: number[] = [];
   private appNetworkService: AppNetworkService;
   public isNavBarActive: Boolean = true;
+  public isSideBarActive: Boolean = false;
 
   constructor( public location: Location, private router: Router, private apns: AppNetworkService) {
     this.appNetworkService = apns;
     if(!this.appNetworkService.verifyIfLoggedIn() && this.router.url === '/login') {
       this.isNavBarActive = false;
     }
+    router.events.subscribe((val) => {
+        if(val instanceof NavigationEnd && ((val.url.indexOf("/dashboard/admin/") > -1) || (val.url.indexOf("/user-profile") > -1))) {
+          this.isSideBarActive = true;
+        } else {
+          this.isSideBarActive = false;
+        }
+    });
   }
 
   ngOnInit() {

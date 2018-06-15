@@ -398,6 +398,11 @@
     }
 }
 
+.main-panel-dash-sank {
+    width: calc(100% - 261px) !important;
+    margin-left:261px;
+}
+
 .perfect-scrollbar-on{
     .sidebar,
     .main-panel{

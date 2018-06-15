@@ -15,9 +15,9 @@ export class AppComponent {
 	constructor(private apns: AppNetworkService, private rtr: Router) { 
 		this.appNetworkService = apns;
 		this.router = rtr;
-		if(!this.appNetworkService.verifyIfLoggedIn() && this.router.url !== '/login') {
-			this.router.navigateByUrl('/login');
-		}
-	}
+		
+			this.router.navigateByUrl('/search');
+		
 
+}
 }

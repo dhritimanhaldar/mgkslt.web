@@ -1,0 +1,14 @@
+<div class="profilepic-container">
+    <div class="profilepicdiv" [ngStyle]="{'background-image': 'url(' + src + ')'}"></div>
+    <button mat-button class="editRemoveButton" *ngIf="editable && !srcSet">
+        <input type="file" (change)="showPreview($event)">
+        <span><i class="fa fa-edit"></i> &nbsp;&nbsp;EDIT PHOTO</span>
+    </button>
+    <button mat-button class="editRemoveButton" *ngIf="editable && srcSet" (click)="removePreview($event)">
+        <i class="fa fa-trash-alt"></i> &nbsp;&nbsp;REMOVE PHOTO
+    </button>
+    <div class="name">
+        {{name}}
+    </div>
+</div>
+

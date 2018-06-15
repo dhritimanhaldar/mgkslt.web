@@ -1,3 +1,5 @@
+import { Utils } from '../Utils';
+
 export class User {
 	id: Number;
 	name: string;
@@ -7,16 +9,14 @@ export class User {
 	gender: string;
 
 	validatePhone(): Boolean {
-		if(!this.phone || this.phone.trim().match(/^([0|\+[0-9]{1,5})?([7-9][0-9]{9})$/) == null) {
-			return false;
-		}
-		return true;
+		return Utils.validatePhone(this.phone)
 	}
 
 	validatePassword(): Boolean {
-		if(!this.password || this.password.length < 6) {
-			return false;
-		}
-		return true;
+		return Utils.validatePassword(this.password)
+	}
+
+	validateEmail(): Boolean {
+		return Utils.validateEmail(this.email)
 	}
 }

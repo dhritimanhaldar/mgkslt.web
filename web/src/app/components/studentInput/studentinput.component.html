@@ -1,0 +1,73 @@
+<div class="row">
+	<div *ngIf="!inputType.value || inputType.value=='keyin'" style="margin-top:10px" class="col col-md-8">Enter student and parent information</div>
+
+  <div *ngIf="inputType.value=='csv'" style="margin-top:10px" class="col col-md-8">Upload the students data. You can download the <a href="https://s3.us-east-2.amazonaws.com/mgkslt-prod-public/schoolCreation/Students.xlsx.csv" style="color:#007dff" download>sample file</a> for reference.</div>
+
+  <div class="col col-md-4">
+    <mat-button-toggle-group class="pull-right" #inputType="matButtonToggleGroup" value="keyin">
+      <mat-button-toggle value="keyin">
+        <!-- <mat-icon>format_align_left</mat-icon> -->
+        <i class="fa fa-keyboard-o" aria-hidden="true" style="font-size:20px;"></i>
+      </mat-button-toggle>
+      <mat-button-toggle value="csv">
+        <!-- <mat-icon>format_align_right</mat-icon> -->
+        <i class="fa fa-file-excel-o" aria-hidden="true" style="font-size:20px;"></i>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col col-md-12 col-lg-12 col-sm-12" *ngIf="inputType.value=='csv'">
+    <app-uploader type='csv' (onUpdate)="onFileUpload($event)"></app-uploader>
+  </div>
+
+  <div *ngIf="inputType.value=='keyin'" class="col col-md-12 col-lg-12 col-sm-12">
+    <div class="row">
+      <div class="col col-md-9 col-lg-9 col-sm-9">
+        <mat-form-field class="example-full-width">
+          <input [(ngModel)]="studentSearchText" name="search" matInput placeholder="Search student" type="search" [disabled]="searchDisabled">
+        </mat-form-field>
+      </div>
+      <div class="col col-md-3 col-lg-3 col-sm-3">
+        <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="showStudentForm($event)">
+          ADD STUDENT
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+            <!-- </div>
+            <br>
+            <div *ngIf="inputType.value=='csv'" class="row">
+              <div class="col col-lg-12">
+                  <div [ngClass]="{'drop-zone': !isActive && !isPreviewActive, 'drop-zone-highlighted': isActive && !isPreviewActive, 'text-center': true , 'drop-zone-unmarked': isPreviewActive}" (dragenter)="dragStart($event)" (dragover)="dragOver($event)" (dragleave)="dragEnd($event)" (drop)="onDrop($event)" style="height: 250px">
+                    <div [ngClass]="{'schoolImagePreviewOff': !isPreviewActive, 'drop-zone-crosslabel': isPreviewActive}">
+                      <span style="cursor:pointer" (click)="clearPreview()">CLEAR</span>
+                    </div>
+                    <span [ngClass]="{'schoolImagePreviewOff': isPreviewActive, 'drop-zone-label': !isPreviewActive }" style="margin-top:80px">
+                      Drag & Drop Student Data CSV file here<br>OR<br>
+                      <div mat-raised-button class="btn btn-rose text-center" style="font-weight: normal">
+                        Upload File<input type="file" class="drop-zone-input" (change)="changeListener($event)"/>
+                      </div>
+                    </span>
+                    <div [ngClass]="{'schoolFilePreview': isPreviewActive, 'schoolImagePreviewOff': !isPreviewActive}">
+                      <span class="drop-zone-label" style="margin-top:130px;color:#e91e63"><i class="fa fa-file-excel-o" style="font-size:20px;"></i>&nbsp;&nbsp;{{schoolImageName}}</span>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div *ngIf="!inputType.value || inputType.value=='keyin'" class="row">
+              <div class="col col-lg-12">
+                <button mat-raised-button type="button" class="btn btn-rose" (click)="showStudentInputComponent($event)">ADD STUDENT</button>
+              </div>
+            </div>
+            <br>
+            <button mat-raised-button type="button" class="btn btn-rose pull-right" (click)="next($event, school.stage + 1)">NEXT</button>
+            <button mat-raised-button type="button" class="btn btn-white pull-right" (click)="abort($event)" style="margin-right:10px;">ABORT</button>
+            <div class="clearfix"></div> -->
+<!-- </div> -->
