@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AppNetworkService } from './services/app-network.service';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
-const routes: Routes =[
+const routes: Routes = [
   {
     path: '',
     redirectTo: 'role',

@@ -9,15 +9,12 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
 
-	private appNetworkService: AppNetworkService;
-	private router: Router;
+ private appNetworkService: AppNetworkService;
+ private router: Router;
 
-	constructor(private apns: AppNetworkService, private rtr: Router) { 
-		this.appNetworkService = apns;
-		this.router = rtr;
-		
-			this.router.navigateByUrl('/search');
-		
-
+ constructor(private apns: AppNetworkService, private rtr: Router) {
+  this.appNetworkService = apns;
+  this.router = rtr;
+  this.router.navigateByUrl('/search');
 }
 }

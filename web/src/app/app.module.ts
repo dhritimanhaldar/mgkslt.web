@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { HttpModule } from "@angular/http";
+import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -12,7 +12,7 @@ import { MatTableDataSource } from '@angular/material';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Ng2CarouselamosModule } from 'ng2-carouselamos';
-import {CarouselModule} from "angular2-carousel";
+import {CarouselModule} from 'angular2-carousel';
 import { SwiperModule } from 'angular2-useful-swiper';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -37,11 +37,11 @@ import {
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
 const appInitializerFn = (appNetworkService: AppNetworkService) => {
-  if(appNetworkService.verifyIfLoggedIn()){
+  if (appNetworkService.verifyIfLoggedIn()) {
       return () => {
         return appNetworkService.getUserAsync();
     };
-  }else {
+  } else {
     return() => {return true}
   }
 };
