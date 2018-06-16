@@ -29,26 +29,17 @@
                             </div> -->  <!-- undo commenting and do the necessasry changes -->
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="row">
-                                        <textarea rows="4"
-                                            cols="50"
-                                            class="form-control input-sm"
-                                            id="Choices"
-                                            (keypress)="checkForNewLine($event.keyCode)" [(ngModel)]="stateList.Choices">
-                                        </textarea>
-                                    </div>
-                                    <div class="row">
-                                        <select class="form-control input-sm"
-                                        [(ngModel)]="stateList.SelectedValue"
-                                        [ngModelOptions]="{standalone: true}"
-                                        required>
-                                            <option *ngFor="let choice of defaultOptions" [ngValue]="choice.value">{{choice.value}}</option>
-                                        </select>
-                                    </div>
+                                    <div class="dropdown">
+                                        <button (click)="myFunction($event)" class="btn btn-rose">Start</button>
+                                          <div id="myDropdown" class="dropdown-content" style="overflow: auto; max-height: 200px;">
+                                            <input type="text" placeholder="Search.." id="myInput" (keyup)="filterFunction()">
+                                                  
+                                          </div>
+                                        </div>
                                 </div>
                                 <div class="col-md-6">
                                     <button class="btn btn-rose download">Schools Near You</button>
-                                    <button mat-raised-button type="locationSearch" class="btn btn-danger pull-right" (click)="goodClick($event)">SUBMIT</button>
+                                    <button mat-raised-button type="locationSearch" class="btn btn-danger pull-right" >SUBMIT</button>
                                 </div>
                             </div>
                         </form>
