@@ -8,6 +8,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminLayoutRoutes } from './admin-layout.routing';
 import { LoginComponent } from '../../login/login.component';
+import { SearchComponent } from '../../search/search.component';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { RoleComponent } from '../../role/role.component';
 import { SchoolCreationWizardComponent } from '../../school-creation-wizard/school-creation-wizard.component';
@@ -21,6 +22,7 @@ import {
   MatRippleModule,
   MatTooltipModule,
 } from '@angular/material';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -37,6 +39,7 @@ import {
   ],
   declarations: [
     LoginComponent,
+    SearchComponent,
     DashboardComponent,
     RoleComponent,
     SchoolCreationWizardComponent,
