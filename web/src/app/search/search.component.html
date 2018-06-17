@@ -1,9 +1,11 @@
 
-<head>
-        <meta charset="utf-8">
-        </head>
 <div class="main-content" style="margin: 0;height: 100vh">
     <div class="container-fluid">
+
+            <div style="background-color: #e91e63; height: 30vh;width: 100vw;top:0;left:0;position: absolute;box-shadow: 0px 0px 19px 0px rgba(0,0,0,0.75);">
+
+                </div>
+
         <div class="row">
             <div class="col-md-12 text-center">
                 <div class="card search-card">
@@ -13,6 +15,15 @@
                     </div>
                     <div class="card-body">
                         <br>
+                        <form>
+                            <div class="row">
+                                <div class="col col-lg-2"></div>
+                                <div class="col col-lg-8">
+                                    <button (click)="myFunction($event)" class="btn btn-rose">Begin Wonder</button>
+                                </div>
+                                <div class="col col-lg-2"></div>
+                            </div>
+                        </form>
                         <br>
                         <form>
                        <!-- <div class="row">
@@ -27,15 +38,26 @@
                                     </carousel-component>
                                 </div>
                             </div> -->  <!-- undo commenting and do the necessasry changes -->
-                            <div class="row">
+                            <div class="col">
                                 <div class="col-md-6">
                                     <div class="dropdown">
-                                        <button (click)="myFunction($event)" class="btn btn-rose">Start</button>
+                                            <input type="text" placeholder="Search using Area...." id="myInput" (keyup)="filterFunction()" onfocus="myFocus()" onblur="myBlur()">
+                                        
                                           <div id="myDropdown" class="dropdown-content" style="overflow: auto; max-height: 200px;">
-                                            <input type="text" placeholder="Search.." id="myInput" (keyup)="filterFunction()">
                                                   
                                           </div>
-                                        </div>
+                                        </div><!--
+                                        <div id="search-component">
+                                                <input #searchBox placeholder="Search using SchoolName...." id="search-box" (keyup)="search(searchBox.value)" />
+                                               
+                                                <ul class="search-result">
+                                                  <li *ngFor="let hero of heroes$ | async" >
+                                                    <a routerLink="/detail/{{hero.id}}">
+                                                      {{hero.name}}
+                                                    </a>
+                                                  </li>
+                                                </ul>
+                                              </div>-->
                                 </div>
                                 <div class="col-md-6">
                                     <button class="btn btn-rose download">Schools Near You</button>
@@ -47,6 +69,7 @@
                 </div>
             </div>
         </div>
+        <form>
         <div class="row">
         <div class="col-md-12 text-center">
         <div class="card search-card">
@@ -119,5 +142,6 @@
             </div>
         
         </div>
+    </form>
     </div>
 </div>

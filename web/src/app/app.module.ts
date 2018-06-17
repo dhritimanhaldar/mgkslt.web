@@ -21,6 +21,9 @@ import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 import { AppNetworkService } from './services/app-network.service';
 import { AppNotificationService } from './services/app-notification.service';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService }  from './services/in-memory-data.service';
+import { SchoolService } from './services/school.service';
 
 import { AppComponent } from './app.component';
 import { BoardDialog } from './school-creation-wizard/school-creation-wizard.component';
@@ -81,6 +84,9 @@ const appInitializerFn = (appNetworkService: AppNetworkService) => {
     AppNotificationService,
     AppNetworkService,
     AppNetworkService,
+    InMemoryDataService,
+    HttpClientInMemoryWebApiModule,
+    SchoolService,
     {
       provide: APP_INITIALIZER,
       useFactory: appInitializerFn,
