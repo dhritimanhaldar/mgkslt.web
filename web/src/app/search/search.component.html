@@ -15,56 +15,60 @@
                     </div>
                     <div class="card-body">
                         <br>
-                        <form>
-                            <div class="row">
-                                <div class="col col-lg-2"></div>
-                                <div class="col col-lg-8">
-                                    <button (click)="myFunction($event)" class="btn btn-rose">Begin Wonder</button>
-                                </div>
-                                <div class="col col-lg-2"></div>
-                            </div>
+                        <form *ngIf="currenView != 'startapp'">
+                                <div class="row">
+                                    <div class="card column" style="background-color:#aaa;">
+                                        <h3>Search Schools of an Area</h3>
+                                        <button (click)="myFunctionArea($event)" class="btn btn-rose btnStart">Search Using Area</button>
+                                          
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                
+                                                        <mat-form-field class="example-full-width">
+                                                    <input class="searchBox" type="text" placeholder="Search using Area...." id="myInputArea" (keyup)="filterFunctionArea()" onfocus="myFocus()" onblur="myBlur()">
+                                                        </mat-form-field>
+                                                    <div id="myDropdownArea" class="dropdown-content" style="overflow: auto; max-height: 200px;">
+                                                                  
+                                                    </div>
+                                                
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <button mat-raised-button type="locationSearch" class="btn btn-danger pull-right" >SUBMIT</button>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                        <div class="card column" style="background-color:#bbb;">
+                                          <h3>Search for particular School</h3>
+                                          <button (click)="myFunctionSchool($event)" class="btn btn-rose btnStart">Search Using School Name</button>
+
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    
+                                                            <mat-form-field class="example-full-width">
+                                                        <input class="searchBox" type="text" placeholder="Search using SchoolName...." id="myInputSchool" (keyup)="filterFunctionSchool()" (focus)="myFocus()" (focusout)="myBlur()">
+                                                        </mat-form-field>
+                                                        <div id="myDropdownSchool" class="dropdown-content" style="overflow: auto; max-height: 200px;">
+                                                        
+                                                        </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button mat-raised-button type="locationSearch" class="btn btn-danger pull-right" >SUBMIT</button>
+                                                </div>
+                                            </div>
+                                          
+                                        </div>
+                                        <div class="card column" style="background-color:#ccc;">
+                                            <h3>Find Schools Directly Near you</h3>
+                                            <button class="btn btn-rose download btnStart" (click)="getLocationAndSearch()">Schools Near You</button>
+                                        </div>
+                                      </div>
+                            
+                                      
                         </form>
                         <br>
-                        <form>
-                       <!-- <div class="row">
-                                <div class="col-md-6">
-                                    <carousel-component #topCarousel item-height="50vh" item-width="50vh">
-                                            <div class="item-carousel">a</div>
-                                            <div class="item-carousel">b</div>
-                                            <div class="item-carousel">c</div>
-                                            <div class="item-carousel">d</div>
-                                            <div class="item-carousel">e</div>
-                                            <div class="item-carousel">f</div>
-                                    </carousel-component>
-                                </div>
-                            </div> -->  <!-- undo commenting and do the necessasry changes -->
-                            <div class="col">
-                                <div class="col-md-6">
-                                    <div class="dropdown">
-                                            <input type="text" placeholder="Search using Area...." id="myInput" (keyup)="filterFunction()" onfocus="myFocus()" onblur="myBlur()">
-                                        
-                                          <div id="myDropdown" class="dropdown-content" style="overflow: auto; max-height: 200px;">
-                                                  
-                                          </div>
-                                        </div><!--
-                                        <div id="search-component">
-                                                <input #searchBox placeholder="Search using SchoolName...." id="search-box" (keyup)="search(searchBox.value)" />
-                                               
-                                                <ul class="search-result">
-                                                  <li *ngFor="let hero of heroes$ | async" >
-                                                    <a routerLink="/detail/{{hero.id}}">
-                                                      {{hero.name}}
-                                                    </a>
-                                                  </li>
-                                                </ul>
-                                              </div>-->
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-rose download">Schools Near You</button>
-                                    <button mat-raised-button type="locationSearch" class="btn btn-danger pull-right" >SUBMIT</button>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -94,7 +98,7 @@
                     <div class="card-body">
                         <form>
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-8"><!--
                                     <h4>Distance</h4>
                                 </div>
                                 <div class="col-md-2">
@@ -117,11 +121,26 @@
                                     </div>
                                     <div class="row">
                                         <input type="button" src="images/down_arrow.png" alt="Submit" width="48" height="48">
-                                    </div>
-                                                            
+                                    </div>-->
+
+
+<!--
+                                    <form class="example-form">
+                                        <mat-form-field class="example-full-width">
+                                          <input type="text" placeholder="search word" aria-label="Number" matInput [formControl]="searchTerm" [matAutocomplete]="auto">
+                                          <mat-autocomplete #auto="matAutocomplete">
+                                            <mat-option *ngFor="let item of searchResult" [value]="item">
+                                              {{ item }}
+                                            </mat-option>
+                                          </mat-autocomplete>
+                                        </mat-form-field>
+                                    </form>
+-->
+
+
+
                                 </div>
                             </div>
-                                    
                         </form>
                     </div>
                 </div>

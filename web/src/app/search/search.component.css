@@ -37,6 +37,28 @@
 	margin-top:10vh;
 }
 
+.column {
+  float: left;
+  width: 33.11%;
+  padding: 10px;
+  margin: 0.11%;
+  height: 200px; 
+}
+
+.searchBox {
+  width: 70%;
+  margin: 2.5%;
+  height: 40px;
+  padding: 0%; 
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 .download:before {
 	background: url("images/paper_plane.png") no-repeat scroll center center / 100% auto rgba(0, 0, 0, 0);
 	content: "";
@@ -79,6 +101,16 @@
 	font-size: 16px;
 	border: none;
 	cursor: pointer;
+}
+
+.btnStart{
+  height: 50px;
+  width: 60%;
+  align-self: center;
+  background: #ff055c;
+	position: relative;
+	top: -2px;
+	vertical-align: middle;
 }
 
 .dropbtn:hover, .dropbtn:focus {
@@ -216,3 +248,22 @@ ul.search-result {
   padding-left: 0;
 }
 
+.demo-autocomplete {
+  display: flex;
+  flex-flow: row wrap;
+}
+  .mat-card {
+    width: 400px;
+    margin: 24px;
+  }
+
+  .mat-form-field {
+    margin-top: 16px;
+    min-width: 200px;
+    max-width: 100%;
+}
+
+.demo-secondary-text {
+  color: rgba(0, 0, 0, 0.54);
+  margin-left: 8px;
+}
