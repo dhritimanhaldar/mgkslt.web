@@ -10,14 +10,14 @@ import { LatLng } from '@agm/core';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 
-import {
+/*import {
   state
 } from '@angular/animations';
 declare var $: any;
 import {
   debounceTime, distinctUntilChanged, switchMap
 } from 'rxjs/operators';
-
+*/
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -25,32 +25,74 @@ import {
 })
 export class SearchComponent implements OnInit{
 
-  public  searchTerm : FormControl = new FormControl();
+  public searchArea : FormControl = new FormControl();     // take a look at these
+  public searchSchool : FormControl = new FormControl();
+  searchTextArea: string  
+  searchTextSchool: string                                 // till these, since my *ng functions are not working
 
   public searchResult = [];
+  public filteredValues = [];
   
   private appNetworkService: AppNetworkService;
   private appNotificationService: AppNotificationService;
   public stateList: State[];
   public stateName: string[];
+  public searchResultSchool: SchoolCard[];
+
   public message = "message";
   public currenView: string = 'startapp'
   private schoolService: SchoolService;
   public latitude: LatLng;
   public longitude: LatLng;
-  public count:number = 0;
+  public count:number = 0;      //to be deleted, for testing perposes only
 
   constructor(private apns: AppNetworkService, private ans: AppNotificationService) {
     this.appNetworkService = apns;
     this.appNotificationService = ans;
 
-    this.searchTerm.valueChanges.debounceTime(300).subscribe(data => {
+    this.searchArea.valueChanges.subscribe(newValue=>{
+           this.filteredValues = this.filterValues(newValue);
+        })
+
+    this.searchSchool.valueChanges.debounceTime(300).subscribe(data => {
             this.apns.search_word(data).subscribe(response =>{
                 this.searchResult = response
             })
         })
 
   }
+
+  filterValues(search: string) {
+    return this.stateName.filter(value=>
+    value.toLowerCase().indexOf(search.toLowerCase()) === 0);
+}
+
+searchByArea(){
+
+  this.appNetworkService.getSchoolSearchArea(this.searchTextArea).then(d => {
+    let data = d.json();
+    console.log(data)
+    this.searchResultSchool = data.list;
+
+  }).catch(e => {
+    this.notifyIt(this.searchTextArea);
+  });
+  
+}
+
+searchBySchool(){
+
+  this.appNetworkService.getSchoolSearchSchool(this.searchTextSchool).then(d => {
+    let data = d.json();
+    console.log(data)
+    this.searchResultSchool = data.list;
+
+  }).catch(e => {
+
+    this.notifyIt(this.searchTextSchool);
+  });
+  
+}
 
 getLocationAndSearch() {
   
@@ -65,7 +107,16 @@ getLocationAndSearch() {
 getSearchPosition(position) {
     this.latitude = position.coords.latitude;
     this.longitude = position.coords.longitude;
-    this.notifyIt("Latitude: "+ this.latitude+ ", Longitude: "+ this.longitude);
+
+    this.appNetworkService.getSchoolSearchLatLng(this.latitude, this.longitude).then(d => {
+      let data = d.json();
+      console.log(data)
+      this.searchResultSchool = data.list;
+  
+    }).catch(e => {
+      this.notifyIt("Latitude: "+ this.latitude+ ", Longitude: "+ this.longitude);
+    });
+
 }
 
 showError(error) {
@@ -87,20 +138,30 @@ showError(error) {
 
 myFocus(){
 
-  this.apns.getStateList().then(d => {
+  this.appNetworkService.getStateList().then(d => {
     let data = d.json();
     console.log(data)
     this.stateList = data.list;
 
+    //this.bindData()             //*** this function is not working properly but will be needed for dropdown, although it is just a simple function, explanation find at ###
+
   }).catch(e => {
   });
 
-  this.notifyIt(this.stateList[3].name +" and "+this.stateList[15].name+ " for verification"); //to be removed
+  this.notifyIt(this.stateList[this.count].name+ " for verification");    //### explanation: this is working but
+  //this.notifyIt(this.stateName[this.count]+ " for verification");         //this is not
+  this.count = this.count+1;
 
 }
 
 notifyIt(display){
   this.appNotificationService.notify(display, "info");
+}
+
+bindData(){
+  for(var i = 0; i<this.stateList.length; i++){
+    this.stateName[i] = this.stateList[i].name;
+  }
 }
 
   ngOnInit(): void  {

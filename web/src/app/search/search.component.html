@@ -1,4 +1,3 @@
-
 <div class="main-content" style="margin: 0;height: 100vh">
     <div class="container-fluid">
 
@@ -20,28 +19,28 @@
                             <div class="row">
                                 <div class="card column" style="background-color:#aaa;">
                                     <h3>Search Schools of an Area</h3>
-                                          
+                                    <div class="row" style="padding: 10%">
                                         <form class="example-form">
                                             <mat-form-field class="example-full-width">
-                                                <input type="text" placeholder="search word" aria-label="Number" matInput [formControl]="searchTerm" [matAutocomplete]="auto" (focus)="myFocus()">
+                                                <input [(ngModel)]="searchTextArea" type="text" placeholder="Search with area Name" aria-label="Number" matInput [formControl]="searchArea" [matAutocomplete]="auto" (focus)="myFocus()">
                                                 <mat-autocomplete #auto="matAutocomplete">
-                                                    <mat-option *ngFor="let item of searchResult" [value]="item">
+                                                    <mat-option *ngFor="let item of filteredValues" [value]="item">
                                                         {{ item }}
                                                     </mat-option>
                                                 </mat-autocomplete>
                                             </mat-form-field>
                                         </form>
-                                        <div class="col-md-4">
-                                            <button mat-raised-button type="locationSearch" class="btn btn-danger pull-right" >SUBMIT</button>
-                                        </div>
-                                    
+                                        <form class="col-md-4">
+                                            <button mat-raised-button type="locationSearch" class="btn btn-danger pull-right" (click)="searchByArea()" >SUBMIT</button>
+                                        </form>
+                                    </div>
                                 </div>
                                 <div class="card column" style="background-color:#bbb;">
                                     <h3>Search for particular School</h3>
-                                    <div class="row">
+                                    <div class="row" style="padding: 10%">
                                         <form class="example-form">
                                             <mat-form-field class="example-full-width">
-                                                <input type="text" placeholder="search word" aria-label="Number" matInput [formControl]="searchTerm" [matAutocomplete]="auto" (focus)="myFocus()">
+                                                <input [(ngModel)]="searchTextSchool" type="text" placeholder="Search with School Name" aria-label="Number" matInput [formControl]="searchSchool" [matAutocomplete]="auto">
                                                 <mat-autocomplete #auto="matAutocomplete">
                                                     <mat-option *ngFor="let item of searchResult" [value]="item">
                                                         {{ item }}
@@ -49,9 +48,9 @@
                                                 </mat-autocomplete>
                                             </mat-form-field>
                                         </form>
-                                        <div class="col-md-4">
-                                            <button mat-raised-button type="locationSearch" class="btn btn-danger pull-right" >SUBMIT</button>
-                                        </div>
+                                        <form class="col-md-4">
+                                            <button mat-raised-button type="locationSearch" class="btn btn-danger pull-right" (click)="searchBySchool()" >SUBMIT</button>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="card column" style="background-color:#ccc;">

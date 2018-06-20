@@ -20,8 +20,8 @@ export class school {
 export class AppNetworkService {
   private appConfig;
   private _baseUrl = "http://stage-sg.mgkslt.com/";       //to be replaced with base Url
-  private _baseUrl2 = "http://stage-sg.mgkslt.com/v1/state/list";
-  private _urlSearchArea: string = "https://api.datamuse.com/words?ml=";
+  
+  private _urlSearchArea: string = "https://api.datamuse.com/words?ml=";       //to be replaced with base Url
 
   private _token: string;
   private _roleauth: string;
@@ -378,8 +378,6 @@ export class AppNetworkService {
     return this.getRequest("secure/school/" + schoolId, null);
   }
 
-  // to be changed, done by Dhritiman
-
   //save class detail
   saveClassDetail(objClass, schoolId): Promise<any> {
     return this.postRequest("secure/app/class",  objClass, null);
@@ -426,7 +424,22 @@ export class AppNetworkService {
   }
 
 
-  //Added by Dhritiman Haldar
+  // to be changed, done by Dhritiman
+  getSchoolSearchArea(area): Promise<any> {
+    return this.getRequest("addExtrasArea" + area, null);
+  }
+
+  // to be changed, done by Dhritiman
+  getSchoolSearchSchool(school): Promise<any> {
+    return this.getRequest("addExtrasSchool" + school, null);
+  }
+
+  // to be changed, done by Dhritiman
+  getSchoolSearchLatLng(latitude, longitude): Promise<any> {
+    return this.getRequest("addExtrasLatLng" + "latitude="+latitude+"&longitude="+longitude, null);
+  }
+
+  //to be changed, Added by Dhritiman Haldar
   search_word(term){
     return this.http.get(this._urlSearchArea + term).map(res => {
         return res.json().map(item => {
