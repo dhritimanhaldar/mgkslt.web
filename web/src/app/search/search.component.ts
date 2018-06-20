@@ -1,9 +1,14 @@
-import { Component, OnInit, ElementRef} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { AppNotificationService } from '../services/app-notification.service';
 import { AppNetworkService } from '../services/app-network.service';
 import { State } from '../models/State';
 import { SchoolCard } from '../models/SchoolCard';
 import { SchoolService } from '../services/school.service';
+import { FormControl } from '@angular/forms';
+import { LatLng } from '@agm/core';
+
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/map';
 
 import {
   state
@@ -12,7 +17,6 @@ declare var $: any;
 import {
   debounceTime, distinctUntilChanged, switchMap
 } from 'rxjs/operators';
-import { LatLng } from '@agm/core';
 
 @Component({
   selector: 'app-search',
@@ -20,7 +24,10 @@ import { LatLng } from '@agm/core';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit{
-  
+
+  public  searchTerm : FormControl = new FormControl();
+
+  public searchResult = [];
   
   private appNetworkService: AppNetworkService;
   private appNotificationService: AppNotificationService;
@@ -28,131 +35,25 @@ export class SearchComponent implements OnInit{
   public stateName: string[];
   public message = "message";
   public currenView: string = 'startapp'
-  public isFirstArea = true;
-  public isFirstSchool = true;
-  private searchTerms = new Subject<string>();
   private schoolService: SchoolService;
   public latitude: LatLng;
   public longitude: LatLng;
   public count:number = 0;
 
-  constructor(private apns: AppNetworkService, private ans: AppNotificationService, private el: ElementRef) {
+  constructor(private apns: AppNetworkService, private ans: AppNotificationService) {
     this.appNetworkService = apns;
     this.appNotificationService = ans;
+
+    this.searchTerm.valueChanges.debounceTime(300).subscribe(data => {
+            this.apns.search_word(data).subscribe(response =>{
+                this.searchResult = response
+            })
+        })
+
   }
-  
-  myFunctionArea(event) {
-    
-    var button = event.target;
-    button.textContent = "Wait.....";
-    button.disabled = true;
-
-    var div = document.getElementById("myDropdownArea");
-
-    if(this.isFirstArea){
-    this.appNetworkService.getStateList()
-    .then(d => {
-      let data = d.json();
-      console.log(data)
-      this.stateList = data.list;
-
-      for (var j = 0; j < this.stateList.length; j++) {
-        var a = document.createElement("a");
-        a.href = "#"+this.stateList[j].name;
-        a.textContent = this.stateList[j].name;
-        div.appendChild(a);
-        div.appendChild(document.createElement("br"));
-        this.isFirstArea = false;
-    }  
-    }).catch(e => {
-    });
-  }
-
-  div.classList.toggle("show");
-
-  button.disabled = false;
-  button.textContent = "Ready";
-  
-  this.currenView = 'getready'
-}
-  
-myFunctionSchool(event) {
-  
-  var button = event.target;
-  button.textContent = "Wait.....";
-  button.disabled = true;
-
-  var div = document.getElementById("myDropdownSchool");
-
-  if(this.isFirstSchool){
-  this.appNetworkService.getStateList()
-  .then(d => {
-    let data = d.json();
-    console.log(data)
-    this.stateList = data.list;
-
-    for (var j = 0; j < this.stateList.length; j++) {
-      var a = document.createElement("a");
-      a.href = "#"+this.stateList[j].name;
-      a.textContent = this.stateList[j].name;
-      div.appendChild(a);
-      div.appendChild(document.createElement("br"));
-      this.isFirstSchool = false;
-  }  
-  }).catch(e => {
-  });
-}
-
-div.classList.toggle("show");
-
-button.disabled = false;
-button.textContent = "Ready";
-
-this.currenView = 'getready'
-}
-
-filterFunctionArea() {
-  this.count = this.count+1;
-  var input, filter, a, i, tempbreak;
-  input = document.getElementById("myInputArea");
-  filter = input.value.toUpperCase();
-  var div = document.getElementById("myDropdownArea");
-  
-  a = div.getElementsByTagName("a");
-  tempbreak = div.getElementsByTagName("br");
-  for (i = 0; i < a.length; i++) {
-      if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
-        a[i].style.display = "";
-        tempbreak[i].style.display = "";
-      } else {
-        a[i].style.display = "none";
-        tempbreak[i].style.display = "none";
-      }
-  }
-}
-
-filterFunctionSchool() {
-  
-  var input, filter, a, i, tempbreak;
-  input = document.getElementById("myInputSchool");
-  filter = input.value.toUpperCase();
-  var div = document.getElementById("myDropdownSchool");
-  
-  a = div.getElementsByTagName("a");
-  tempbreak = div.getElementsByTagName("br");
-  for (i = 0; i < a.length; i++) {
-      if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
-        a[i].style.display = "";
-        tempbreak[i].style.display = "";
-      } else {
-        a[i].style.display = "none";
-        tempbreak[i].style.display = "none";
-      }
-  }
-}
 
 getLocationAndSearch() {
-  this.notifyIt(this.count);
+  
   var nav = navigator.geolocation;
     if (nav) {
         nav.getCurrentPosition(this.getSearchPosition.bind(this), this.showError);
@@ -184,69 +85,22 @@ showError(error) {
     }
   }
 
+myFocus(){
+
+  this.apns.getStateList().then(d => {
+    let data = d.json();
+    console.log(data)
+    this.stateList = data.list;
+
+  }).catch(e => {
+  });
+
+  this.notifyIt(this.stateList[3].name +" and "+this.stateList[15].name+ " for verification"); //to be removed
+
+}
+
 notifyIt(display){
   this.appNotificationService.notify(display, "info");
-}
-
-myFocus(){
-    
-  var button = event.target;
-
-  var div = document.getElementById("myDropdownArea");
-
-  if(this.isFirstArea){
-  this.appNetworkService.getStateList()
-  .then(d => {
-    let data = d.json();
-    console.log(data)
-    this.stateList = data.list;
-
-    for (var j = 0; j < this.stateList.length; j++) {
-      var a = document.createElement("a");
-      a.href = "#"+this.stateList[j].name;
-      a.textContent = this.stateList[j].name;
-      div.appendChild(a);
-      div.appendChild(document.createElement("br"));
-      this.isFirstArea = false;
-  }  
-  }).catch(e => {
-  });
-}
-
-div.classList.toggle("show");
-
-this.currenView = 'getready'
-
-}
-myBlur(){
-    
-  var button = event.target;
-
-  var div = document.getElementById("myDropdownArea");
-
-  if(this.isFirstArea){
-  this.appNetworkService.getStateList()
-  .then(d => {
-    let data = d.json();
-    console.log(data)
-    this.stateList = data.list;
-
-    for (var j = 0; j < this.stateList.length; j++) {
-      var a = document.createElement("a");
-      a.href = "#"+this.stateList[j].name;
-      a.textContent = this.stateList[j].name;
-      div.appendChild(a);
-      div.appendChild(document.createElement("br"));
-      this.isFirstArea = false;
-  }  
-  }).catch(e => {
-  });
-}
-
-div.classList.toggle("show");
-
-this.currenView = 'getready'
-  
 }
 
   ngOnInit(): void  {

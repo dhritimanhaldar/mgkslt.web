@@ -16,6 +16,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import { MatRadioModule } from '@angular/material/radio';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule} from '@angular/material';
 
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
@@ -57,9 +59,11 @@ const appInitializerFn = (appNetworkService: AppNetworkService) => {
     MatButtonToggleModule,
     BrowserModule,
     HttpModule,
+    ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatDialogModule,
+    MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
     MatRadioModule,

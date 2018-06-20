@@ -19,8 +19,9 @@ export class school {
 @Injectable()
 export class AppNetworkService {
   private appConfig;
-  private _baseUrl = "http://stage-sg.mgkslt.com/";
+  private _baseUrl = "http://stage-sg.mgkslt.com/";       //to be replaced with base Url
   private _baseUrl2 = "http://stage-sg.mgkslt.com/v1/state/list";
+  private _urlSearchArea: string = "https://api.datamuse.com/words?ml=";
 
   private _token: string;
   private _roleauth: string;
@@ -103,26 +104,6 @@ export class AppNetworkService {
     return this.http
       .get(
         url,
-        new RequestOptions({
-          headers: headers
-        })
-      )
-      .toPromise()
-      .then(res => {
-        if (res.headers.get("roleauth")) {
-          this._roleauth = res.headers.get("roleauth");
-          this.setPermanentCookie("roleauth", this._roleauth)
-        }
-        return res;
-      });
-  }
-
-  getRequestTest(url, extraHeaders): Promise<any> {
-    var headers = this.getHeaders(url, extraHeaders)
-    
-    return this.http
-      .get(
-        this._baseUrl2,
         new RequestOptions({
           headers: headers
         })
@@ -346,10 +327,6 @@ export class AppNetworkService {
     }
   }
 
-  getStateListTest(): Promise<any> {
-      return this.getRequestTest("/state/list", null);
-  }
-
   //get all user roles
   getUserRoleAsync(): Promise<any> {
     // if(this.roleList == null){
@@ -401,6 +378,8 @@ export class AppNetworkService {
     return this.getRequest("secure/school/" + schoolId, null);
   }
 
+  // to be changed, done by Dhritiman
+
   //save class detail
   saveClassDetail(objClass, schoolId): Promise<any> {
     return this.postRequest("secure/app/class",  objClass, null);
@@ -445,5 +424,15 @@ export class AppNetworkService {
         return false;
       });
   }
+
+
+  //Added by Dhritiman Haldar
+  search_word(term){
+    return this.http.get(this._urlSearchArea + term).map(res => {
+        return res.json().map(item => {
+            return item.word
+        })
+    })
+}
 
 }

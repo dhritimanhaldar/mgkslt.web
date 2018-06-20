@@ -15,6 +15,8 @@ import { SchoolCreationWizardComponent } from '../../school-creation-wizard/scho
 import { UserProfileComponent } from '../../user-profile/user-profile.component';
 import { StudentInputComponent } from '../../components/studentinput/studentinput.component';
 import { UploaderComponent } from '../../components/uploader/uploader.component';
+import { MatAutocompleteModule } from '@angular/material';
+
 
 import {
   MatButtonModule,
@@ -35,6 +37,8 @@ import {
     MatInputModule,
     MatTooltipModule,
     MatSelectModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
     MatCheckboxModule
   ],
   declarations: [
